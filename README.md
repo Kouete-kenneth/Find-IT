@@ -53,3 +53,6 @@ potential matches with high accuracy and efficiency.
 
 For your Presentation, focus more on the Engineering Aspect 
 
+practice before the presentation
+
+Each Group memeber need to participate and do the presentation.
