@@ -51,3 +51,5 @@ uploaded images with a database of archived objects. Advanced computer vision
 techniques, such as feature extraction and similarity scoring, will be employed to identify
 potential matches with high accuracy and efficiency.
 
+For your Presentation, focus more on the Engineering Aspect 
+
