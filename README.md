@@ -50,6 +50,18 @@ and search for potential matches.
 uploaded images with a database of archived objects. Advanced computer vision
 techniques, such as feature extraction and similarity scoring, will be employed to identify
 potential matches with high accuracy and efficiency.
+A centralized database will be implemented to store images and metadata of archived
+objects, including descriptions, timestamps, and locations. The database will support
+efficient indexing and retrieval of stored information, enabling users to access relevant data
+quickly during the search process.
+▪ The application will support real-time image matching and notification functionality,
+alerting users when potential matches are found for their lost items. Users will receive
+notifications via push notifications or email, allowing them to review and confirm potential
+matches promptly.
+▪ The application will leverage crowdsourcing and community engagement to enhance the
+effectiveness of the search process. Users will have the option to share information about
+their lost items on social media platforms, enlist the help of friends and family, and
+collaborate with other users in the search for missing objects.
 
 For your Presentation, focus more on the Engineering Aspect 
 
