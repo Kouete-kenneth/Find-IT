@@ -1,0 +1,36 @@
+findit/node_modules
+
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+findit/node_modules/
+
+# Expo
+findit/.expo/
+findit/dist/
+findit/web-build/
+
+# Native
+findit/*.orig.*
+findit/*.jks
+findit/*.p8
+findit/*.p12
+findit/*.key
+findit/*.mobileprovision
+
+# Metro
+findit/.metro-health-check*
+
+# debug
+findit/npm-debug.*
+findit/yarn-debug.*
+findit/yarn-error.*
+# macOS
+findit/.DS_Store
+findit/*.pem
+
+# local env files
+findit/.env*.local
+
+# typescript
+findit/*.tsbuildinfo
