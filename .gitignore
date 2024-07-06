@@ -1,0 +1,42 @@
+./Source_Code/findit/node_modules
+./Source_Code/findit-server/node_modules
+C:\xampp\htdocs\Find-IT\Source_Code\findit-server\node_modules
+C:\xampp\htdocs\Find-IT\Source_Code\findit-server\.vercel
+C:\xampp\htdocs\Find-IT\Source_Code\findit-server\docs
+C:\xampp\htdocs\Find-IT\Source_Code\findit-server\.env
+C:\xampp\htdocs\Find-IT\Source_Code\findit\node_modules
+C:\xampp\htdocs\Find-IT\Source_Code\findit\.expo
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+Source_Code/findit/node_modules/
+
+# Expo
+Source_Code/findit/.expo/
+Source_Code/findit/dist/
+Source_Code/findit/web-build/
+
+# Native
+Source_Code/findit/*.orig.*
+Source_Code/findit/*.jks
+Source_Code/findit/*.p8
+Source_Code/findit/*.p12
+Source_Code/findit/*.key
+Source_Code/findit/*.mobileprovision
+
+# Metro
+Source_Code/findit/.metro-health-check*
+
+# debug
+Source_Code/findit/npm-debug.*
+Source_Code/findit/yarn-debug.*
+Source_Code/findit/yarn-error.*
+# macOS
+Source_Code/findit/.DS_Store
+Source_Code/findit/*.pem
+
+# local env files
+Source_Code/findit/.env*.local
+
+# typescript
+Source_Code/findit/*.tsbuildinfo
