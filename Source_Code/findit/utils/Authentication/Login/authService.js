@@ -1,14 +1,10 @@
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import backendBaseURL from '../../backendBaseURL';
 
-const login = async (formData, setMessage, handleApiError, setIsError, setIsLoggedIn, redirectTo) => {
-  const navigation = useNavigation();
+const login = async (formData, setMessage, handleApiError, setIsError, setIsLoggedIn) => {
   try {
     const response = await backendBaseURL.post('/auth/login', formData);
     const { tokens, user } = response.data;
-    alert(tokens);
 
     // Check if the user's email is verified
     if (!user.isEmailVerified) {
@@ -38,7 +34,7 @@ const login = async (formData, setMessage, handleApiError, setIsError, setIsLogg
     setIsError(false);
 
     // Redirect to the specified screen
-    navigation.navigate(redirectTo);
+    // navigation.navigate(redirectTo);
 
     return Promise.resolve('Login successful');
   } catch (error) {

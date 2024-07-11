@@ -1,22 +1,37 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView, Linking } from 'react-native';
 import { Link } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import handleLogin from '../utils/Authentication/Login/authService';
 import handleApiError from '../utils/handleApiError';
+import { useNavigation } from '@react-navigation/native';
 const Login = () => {
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [messagelocal, setMessage] = useState("");
   const [loginButtonClicked,setLoginButtonClicked]=useState(false)
+  const [isLoggedIn, setIsLoggedIn]=useState(false);
   const [isError, setIsError]=useState(false);
+  const navigation = useNavigation();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("")
     setLoginButtonClicked(true);
-    handleLogin(email, password,setMessage,setIsError,handleApiError,'/home');
+    try {
+      await handleLogin({email, password},setMessage,handleApiError,setIsError,setIsLoggedIn);
+      setMessage("login successful");
+      setIsError(false)
+      navigation.navigate('home');
+    } catch (error) {
+      console.log('login failed: ',error)
+      // setMessage('Login failed');
+      // setIsError(true);
+    }
+  };
+   const handleForgotPassword = () => {
+    Linking.openURL('https://emailpasswordutilities.vercel.app/verify-reset/reset-password/email');
   };
   return (
       <ScrollView className="min-h-full">
@@ -40,10 +55,10 @@ const Login = () => {
                   <FontAwesome name="eye-slash" size={20} color="gray" />
                 </View>
               </View>
-              {(messagelocal && !isError) && (<View className="w-full"><Text className='text-green-600 text-lg font-mRoboto'>{messagelocal}</Text></View>)}
-              {(messagelocal && isError) && (<View className="w-full"><Text className='text-amber-700 text-lg font-mRoboto'>{messagelocal}</Text></View>)}
+              {(messagelocal && !isError) && (<View className="w-full mt-2"><Text className='text-green-600 text-xsm font-mRoboto text-center'>{messagelocal}</Text></View>)}
+              {(messagelocal && isError) && (<View className="w-full mt-2"><Text className='text-amber-700 text-xsm text-center font-mRoboto'>{messagelocal}</Text></View>)}
             </View>
-            <TouchableOpacity className="w-full flex-row justify-end">
+            <TouchableOpacity className="w-full flex-row justify-end" onPress={handleForgotPassword}>
               <Text className="text-primary mb-4 underline">forgotton password?</Text>
             </TouchableOpacity>
             <TouchableOpacity className="w-full bg-primary py-1 rounded-md font-mRoboto mb-4" onPress={handleSubmit}>

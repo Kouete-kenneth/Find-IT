@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import validator from 'validator';
 const emailSchema = mongoose.Schema(
   {
     to: {
@@ -32,9 +32,9 @@ const emailSchema = mongoose.Schema(
       required: true,
     },
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref: 'User',
+      default:'anonymous'
     },
   },
   {

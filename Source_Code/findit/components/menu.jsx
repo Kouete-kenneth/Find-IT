@@ -73,7 +73,7 @@ const Menu = () => {
                   </Link>
                 </TouchableOpacity>
                 <TouchableOpacity className="mb-10 border-b-2 border-b-slate-200 pb-2">
-                  <Link href="/notification">
+                  <Link href="/faqs">
                     <FontAwesome name="book" size={20} className='text-center font-Roboto text-xl'/>
                     <Text className='text-center font-Roboto text-xl'> FAQs</Text>
                   </Link>

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+// import { trim } from 'validator';
 
 const itemSchema = mongoose.Schema(
   {
@@ -6,27 +7,38 @@ const itemSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      default: 'path/to/your/image',
     },
     description: {
       type: String,
       required: true,
       trim: true,
+      default: 'no match',
     },
+    AppwriteImageID:{
+      type:String,
+      required:true,
+      trim:true,
+      default: 'no match',
+    }
+    ,
     location: {
       type: String,
       required: true,
       trim: true,
+      default: 'no match',
     },
     status: {
       type: String,
       enum: ['no match','pending claim', 'claim approved', 'further verification required'],
       required: true,
-      default: 'pending claim',
+      default: 'no match',
     },
     type: {
       type: String,
       enum: ['lost', 'found'],
       required: true,
+      default:'found'
     },
     date: {
       type: Date,
@@ -34,9 +46,7 @@ const itemSchema = mongoose.Schema(
       default: Date.now,
     },
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: 'User',
+      type:String,
     },
   },
   {

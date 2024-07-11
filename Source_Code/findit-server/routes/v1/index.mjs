@@ -7,7 +7,10 @@ import notificationRoute from './notification.route.mjs'
 import docsRoute from './docs.route.mjs';
 import config from '../../config/config.mjs';
 import heroRoutes from './hero.route.mjs'
-
+import Storageroutes from './imageStorage.route.mjs';
+import Itemsroutes from './items.route.mjs';
+import Emailroutes from './email.route.mjs';
+import Marchroutes from './match.route.mjs';
 const router = express.Router();
 
 const defaultRoutes = [
@@ -27,22 +30,22 @@ const defaultRoutes = [
     path: '/notification',
     route: notificationRoute,
   },
-  // {
-  //   path: '/cart',
-  //   route: cartRoute,
-  // },
-  // {
-  //   path: '/favourite',
-  //   route: favouriteRoute,
-  // },
-  // {
-  //   path: '/order',
-  //   route: orderRoute,
-  // },
-  // {
-  //   path: '/payment',
-  //   route: paymentRoute,
-  // },
+  {
+    path: '/storage',
+    route: Storageroutes,
+  },
+  {
+    path: '/items',
+    route: Itemsroutes,
+  },
+  {
+    path: '/emails',
+    route: Emailroutes,
+  },
+  {
+    path: '/match',
+    route: Marchroutes,
+  },
 
   // {
   //   path: '/review',

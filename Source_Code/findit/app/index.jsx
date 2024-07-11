@@ -144,7 +144,7 @@ export default function App() {
             <View className="flex-1 mt-6 w-full items-center justify-center bg-white px-4">
                 {/* Get Started Button */}
                 <TouchableOpacity className="w-full  bg-primary py-2 rounded-lg items-center">
-                    <Link href="/home">
+                    <Link href="/onboarding">
                      <Text className="text-white text-[#ffffff] text-lg font-semibold">Get Started</Text>
                     </Link>
                 </TouchableOpacity>

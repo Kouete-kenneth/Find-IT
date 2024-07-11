@@ -13,13 +13,15 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "package":"com.findit"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets//images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package":"com.findit"
     },
     "web": {
       "favicon": "./assets//images/favicon.png"

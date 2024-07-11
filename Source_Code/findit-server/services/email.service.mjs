@@ -35,6 +35,18 @@ const sendEmail = async (to, subject, text) => {
 };
 
 /**
+ * Send an email from a client 
+ * @param {string} to
+ * @param {string} subject
+ * @param {string} text
+ * @returns {Promise}
+ */
+const sendEmailFrom = async (from, subject, text) => {
+  const msg = {from,to: config.email.from, subject, html:text };
+  await transport.sendMail(msg);
+};
+
+/**
  * Send reset password email
  * @param {string} to
  * @param {string} token
@@ -131,6 +143,7 @@ export {
   transport,
   sendEmailVerificationConfirmationEmail,
   sendEmail,
+  sendEmailFrom,
   sendResetPasswordEmail,
   sendVerificationEmail,
 };
