@@ -36,10 +36,7 @@ const RootLayout = () => {
         
       {/* Optionally configure static options outside the route.*/}
       <Stack.Screen name="index" options={{headerShown:false}} />
-
-      <Stack.Screen name="home" options={{headerShown:false}} />
-      <Stack.Screen name="faqs" options={{headerShown:false}} />
-      <Stack.Screen name="ContactUs" options={{headerShown:false}} />
+      <Stack.Screen name="(Tabs)" options={{headerShown:false}} />
     </Stack>
   );
 

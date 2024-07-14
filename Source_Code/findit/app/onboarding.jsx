@@ -12,42 +12,42 @@ const Onboarding = () => {
   };
 
   const openLink = () => {
-    Linking.openURL('https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'); // Replace with your actual URL
+    Linking.openURL('https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
   };
 
   return (
     <ScrollView className="flex-1 bg-white p-4 w-full">
       <View className='items-center'>
-      <Text className="text-xl text-center font-bold mt-5">How to navigate FindIt</Text>
-      <Text className="text-center mb-8">step by step guide to help you navigate the app</Text>
+      <Text className="text-2xl text-primary text-center font-extrabold mt-5">How to navigate FindIt</Text>
+      <Text className="text-center mb-8 text-xs text-zinc-400">step by step guide to help you navigate the app</Text>
 
-      <View className="flex flex-col space-y-4 mb-10 w-full">
-        <View className="flex-row justify-between gap-2 w-full mb-3 ">
+      <View className="flex flex-col items-center space-y-4 mb-10 w-full">
+        <View className="flex-row justify-between gap-2 w-full mb-4 ">
             <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
                 <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <Text className="text-purple-500 font-bold">1</Text>
+                    <Text className="text-primary font-bold">1</Text>
                 </View>
-                <Text>Sign Up</Text>
+                <Text className='text-xs'>Sign Up</Text>
           </View>
           <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
             <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <Text className="text-purple-500 font-bold">2</Text>
+                <Text className="text-primary font-bold">2</Text>
             </View>
-            <Text>Sign in</Text>
+            <Text className='text-xs'>Sign in</Text>
           </View>
         </View>
        
-        <Text className="font-bold">Do you want to search a missing item?</Text>
+        <Text className="font-bold text-center">Do you want to search a missing item?</Text>
         <View className="flex-row gap-2 justify-between w-full  ">
             <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
                 <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <Text className="text-purple-500 font-bold">3</Text>
+                    <Text className="text-primary font-bold">3</Text>
                 </View>
                 <Text className='text-xs'>select missing Item</Text>
           </View>
-          <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
+          <View className='flex-row flex-1 space-x-2 items-center w-2/5  bg-bgsecondary rounded-3xl'>
             <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <Text className="text-purple-500 font-bold">4</Text>
+                <Text className="text-primary font-bold">4</Text>
             </View>
             <Text className='text-xs'>Fill Item Meta data</Text>
           </View>
@@ -55,13 +55,13 @@ const Onboarding = () => {
         <View className="flex-row gap-2 justify-between w-full ">
             <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
                 <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <Text className="text-purple-500 font-bold">5</Text>
+                    <Text className="text-primary font-bold">5</Text>
                 </View>
                 <Text className='text-xs'>Select Max results</Text>
           </View>
           <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
             <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <Text className="text-purple-500 font-bold">6</Text>
+                <Text className="text-primary font-bold">6</Text>
             </View>
             <Text className='text-xs'>Click Search</Text>
           </View>
@@ -69,28 +69,28 @@ const Onboarding = () => {
         <View className="flex-row gap-2 justify-between w-full mb-4 ">
             <View className='flex-row flex-1 space-x-2 items-center w-2/5 bg-bgsecondary rounded-3xl'>
                 <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <Text className="text-purple-500 font-bold">7</Text>
+                    <Text className="text-primary font-bold">7</Text>
                 </View>
                 <Text className='text-xs'>Select item</Text>
           </View>
           <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
             <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <Text className="text-purple-500 font-bold">8</Text>
+                <Text className="text-primary font-bold">8</Text>
             </View>
             <Text className='text-xs'>wait admin Approval</Text>
           </View>
         </View>
-        <Text className="font-bold">Do you want to upload a found item?</Text>
+        <Text className="font-bold text-center">Do you want to upload a found item?</Text>
         <View className="flex-row gap-2 justify-between w-full mb-4 ">
             <View className='flex-row flex-1 space-x-1 items-center w-2/5 bg-bgsecondary rounded-3xl'>
                 <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <Text className="text-purple-500 font-bold">9</Text>
+                    <Text className="text-primary font-bold">9</Text>
                 </View>
                 <Text className='text-xs'>Select item or capture</Text>
           </View>
           <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
             <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <Text className="text-purple-500 font-bold">10</Text>
+                <Text className="text-primary font-bold">10</Text>
             </View>
             <Text className='text-xs'>Fill item's metadata</Text>
           </View>
@@ -98,13 +98,13 @@ const Onboarding = () => {
         <View className="flex-row gap-2 justify-between w-full mb-4 ">
             <View className='flex-row flex-1 space-x-2 items-center w-2/5 bg-bgsecondary rounded-3xl'>
                 <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <Text className="text-purple-500 font-bold">7</Text>
+                    <Text className="text-primary font-bold">7</Text>
                 </View>
                 <Text className='text-xs'>Click upload</Text>
           </View>
           <View className='flex-row flex-1 space-x-2 items-center w-2/5 w- bg-bgsecondary rounded-3xl'>
             <View className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <Text className="text-purple-500 font-bold">8</Text>
+                <Text className="text-primary font-bold">8</Text>
             </View>
             <Text className='text-xs'>wait for owner</Text>
           </View>
@@ -112,10 +112,10 @@ const Onboarding = () => {
       </View>
 
       <TouchableOpacity onPress={openLink} className="mt-4 mb-10">
-        <Text className="text-blue-500 underline">https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</Text>
+        <Text className="text-blue-500 underline">view flow Chart</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleContinue} className="bg-purple-500 py-3 px-8 rounded-lg w-full mb-10">
+      <TouchableOpacity onPress={handleContinue} className="bg-primary py-3 px-8 rounded-lg w-full mb-10">
         <Text className="text-white font-bold text-center">CONTINUE</Text>
       </TouchableOpacity>
       </View>

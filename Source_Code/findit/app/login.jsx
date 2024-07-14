@@ -23,7 +23,9 @@ const Login = () => {
       await handleLogin({email, password},setMessage,handleApiError,setIsError,setIsLoggedIn);
       setMessage("login successful");
       setIsError(false)
-      navigation.navigate('home');
+      navigation.navigate('(Tabs)',{
+        screen:'home'
+      });
     } catch (error) {
       console.log('login failed: ',error)
       // setMessage('Login failed');
@@ -34,8 +36,8 @@ const Login = () => {
     Linking.openURL('https://emailpasswordutilities.vercel.app/verify-reset/reset-password/email');
   };
   return (
-      <ScrollView className="min-h-full">
-          <View className="flex-col justify-center items-center px-8 gap-4">
+      <ScrollView className="min-h-full px-2">
+          <View className="flex-col justify-center items-center px-8 pb-8 gap-4 border-r-gray-400 border-b-gray-200 border-2">
             <View className="w-full flex-col items-center mb-2 pt-3 gap-4">
               <View className="p-1 flex-row justify-center items-center">
                 <Image source={require('../assets/images/Logo_redesigned.png')} style={{objectFit:'contain',width:60,height:60}}/>

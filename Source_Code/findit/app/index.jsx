@@ -10,19 +10,19 @@ const reviews = [
       name: 'Jean paul',
       review: 'Great app for finding missing objects',
       rating: 5,
-      image: require('../assets/images/profile.jpg'), // replace with your image path
+      image: require('../assets/images/profile.jpg'), 
     },
     {
       name: 'John peter',
       review: 'Very helpful, found item quickly',
       rating: 4,
-      image: require('../assets/images/profile.jpg'), // replace with your image path
+      image: require('../assets/images/profile.jpg'),
     },
     {
         name: 'kouete laurant',
         review: 'Very helpful, found item quickly',
         rating: 4,
-        image: require('../assets/images/profile.jpg'), // replace with your image path
+        image: require('../assets/images/profile.jpg'), 
       },
     // Add more reviews as needed
   ];
@@ -48,19 +48,19 @@ export default function App() {
           title: 'Discover',
           description1: 'Explore the features of Lost & Found app',
           description2: 'Find lost items with ease using our advanced AI technology.',
-          image: require('../assets/images/search.jpg'), // replace with the actual path to your image
+          image: require('../assets/images/search.jpg'), 
         },
         {
           title: 'Contribute',
           description1: 'Help others find their missing objects',
           description2: 'Report found objects to reunite them with their owners.',
-          image: require('../assets/images/contribute-title.png'), // replace with the actual path to your image
+          image: require('../assets/images/contribute-title.png'),
         },
         {
           title: 'Track',
           description1: 'Real-time tracking and location updates',
           description2: 'Track the progress of found objects.',
-          image: require('../assets/icons/globe.png'), // replace with the actual path to your image
+          image: require('../assets/icons/globe.png'),
         },
       ];
   return (
@@ -82,7 +82,7 @@ export default function App() {
                     <Link href="/home">
                         <Image
                             source={require('../assets/icons/ic_baseline-home.png')}
-                            style={{ width: 20, height: 20,resizeMode: 'contain' }} // Adjust size as needed
+                            style={{ width: 20, height: 20,resizeMode: 'contain' }}
                         />
                     </Link>
                 </View>
@@ -90,7 +90,7 @@ export default function App() {
                     <Link href="/login" className="flex justify-center items-center p-2 bg-primary h-8 rounded-md hover:bg-gray-200 transition-colors">
                         <Image
                             source={require('../assets/icons/profile_white.png')}
-                            style={{ width: 24, height: 24,resizeMode: 'contain' }} // Adjust size as needed
+                            style={{ width: 24, height: 24,resizeMode: 'contain' }} 
                         />
                         <Text className="font-bold text-xs text-bgsecondary ml-1">Login</Text>
                     </Link>
@@ -100,7 +100,7 @@ export default function App() {
                         <Image
                         className="mt-0"
                             source={require('../assets/icons/ic_baseline-menu.png')}
-                            style={{ width: 20, height: 20,resizeMode: 'contain', marginTop:0 }} // Adjust size as needed
+                            style={{ width: 20, height: 20,resizeMode: 'contain', marginTop:0 }}
                         />
                     </Link>
                 </View>
@@ -109,14 +109,14 @@ export default function App() {
         <ScrollView className="flex-col" contentContainerStyle={{alignItems:'center'}}>
             {/* Hero Section */}
             <ImageBackground
-            source={require('../assets/images/hero_image.jpg')} // Replace with your local image path or URL
+            source={require('../assets/images/hero_image.jpg')}
             className="w-full h-64 items-center justify-center"
-            style={{ width: '100%', height: 300 }} // Ensure the height covers the hero section
+            style={{ width: '100%', height: 300 }}
             imageStyle={{ resizeMode: 'cover' }}>
                 <View className="bg-black absolute  opacity-40 w-full h-full">
                 </View>
                 <Text className="text-4xl text-primary font-bold font-Poppins">
-                    Welcome to Find <Text className="font-extrabold">I</Text>t
+                    Welcome to Find<Text className="font-extrabold">I</Text>t
                 </Text>
                 <Text className="text-lg text-bgsecondary mt-2 font-rRougeScript">
                     Helping you find what is lost
@@ -211,7 +211,6 @@ export default function App() {
                 ))}
             </Swiper>
             </View>
-
             {/* Footer */}
             <View className="py-4 bg-primary w-full items-center">
             <Text className="text-white text-center text-base font-Roboto-Regular">
@@ -219,7 +218,7 @@ export default function App() {
             </Text>
             </View>
         </ScrollView>
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
     </SafeAreaView>
   );
 }

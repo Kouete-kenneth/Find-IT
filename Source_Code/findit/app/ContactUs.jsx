@@ -5,6 +5,7 @@ import { Link } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons'
 import Menu from '../components/menu'
 import backendBaseURL from '../utils/backendBaseURL'
+import Navbar from '../components/navbar'
 
 const ContactUs = () => {
     const [subject, setsubject] = useState('');
@@ -39,35 +40,6 @@ const ContactUs = () => {
   };
   return (
       <SafeAreaView className="flex-1 bg-white">
-            <View className="flex-row bg-slate-600 justify-between items-center py-0 pl-1 pr-5 border-b border-gray-200" style={{ height: 60, width: '100%', backgroundColor: '#ffffff' }}>
-            <TouchableOpacity className="flex items-center justify-center p-2 rounded-full">
-                <Image
-                    source={require('../assets/images/Logo_redesigned.png')}
-                    className="rounded-full"
-                    style={{resizeMode: 'contain',width:40,height:40 }}
-                />
-            </TouchableOpacity>
-
-            {/* Menu Icons */}
-            <View className="flex-row gap-x-4 items-center justify-center p-1 rounded-lg">
-                <TouchableOpacity>
-                  <Link href='/notification'><FontAwesome name='bell-o' size={20} /></Link>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Link href="/profile">
-                      <FontAwesome name='envelope-o' size={20}/>
-                  </Link>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Link href="/help" >
-                     <FontAwesome name="question-circle-o" size={20}/>
-                  </Link>
-                </TouchableOpacity>
-            </View>
-        </View>
-        <View className="flex-row relative z-50 justify-center items-center bg-bgsecondary">
-            <Menu/>
-        </View>
         <ScrollView className="flex-1 w-full">
         <View className="flex-1 justify-center items-center mb-4 mt-2">
           <Image
