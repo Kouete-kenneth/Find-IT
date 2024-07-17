@@ -24,7 +24,7 @@ const Feedback = () => {
           <Text className="text-xl text-center font-bold mb-4">Submit Your Feedback</Text>
           <Text className="text-xs text-center font-rRoboto text-gray-400 mb-8">This Feaadback helps us Ameliorate the Qualily of services we provide to you!! Thank for Submitting</Text>
         </View>
-        <View className='w-full flex-row border p-3 mb-4 border-gray-200'>
+        <View className='w-full flex-row border p-3 mb-4 border-gray-200 rounded-md'>
           <Text className="text-lg mb-2">Rating us:    </Text>
           <View className="flex-row mb-4">
             {[1, 2, 3, 4, 5].map((star) => (
@@ -38,7 +38,7 @@ const Feedback = () => {
             ))}
           </View>
         </View>
-        <View className='w-full flex-1 flex-col justify-center items-center border p-3 mb-4 border-gray-200'>
+        <View className='w-full flex-1 flex-col justify-center items-center border p-3 mb-4 border-gray-200 rounded-md'>
           {/* <Text className="text-lg mb-2">Review</Text> */}
           <TextInput
             value={content}

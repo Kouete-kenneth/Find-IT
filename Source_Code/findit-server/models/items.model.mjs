@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-// import { trim } from 'validator';
 
 const itemSchema = mongoose.Schema(
   {
@@ -7,22 +6,41 @@ const itemSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      default: 'path/to/your/image',
     },
     description: {
       type: String,
       required: true,
       trim: true,
-      default: 'no match',
     },
-    AppwriteImageID:{
-      type:String,
-      required:true,
-      trim:true,
-      default: 'no match',
-    }
-    ,
-    location: {
+    missingLocation: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    currentLocation: {
+      townOrVillage: {
+        type: String,
+        required: function() {
+          return this.type === 'found'; // Only required if type is 'found'
+        },
+        trim: true,
+      },
+      quarter: {
+        type: String,
+        required: function() {
+          return this.type === 'found'; // Only required if type is 'found'
+        },
+        trim: true,
+      },
+      specificPlace: {
+        type: String,
+        required: function() {
+          return this.type === 'found'; // Only required if type is 'found'
+        },
+        trim: true,
+      },
+    },
+    contactPersonContact: {
       type: String,
       required: true,
       trim: true,
@@ -30,7 +48,7 @@ const itemSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['no match','pending claim', 'claim approved', 'further verification required'],
+      enum: ['no match', 'pending claim', 'claim approved', 'further verification required'],
       required: true,
       default: 'no match',
     },
@@ -38,7 +56,7 @@ const itemSchema = mongoose.Schema(
       type: String,
       enum: ['lost', 'found'],
       required: true,
-      default:'found'
+      default: 'found',
     },
     date: {
       type: Date,
@@ -46,7 +64,7 @@ const itemSchema = mongoose.Schema(
       default: Date.now,
     },
     userId: {
-      type:String,
+      type: String,
     },
   },
   {

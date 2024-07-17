@@ -39,11 +39,11 @@ const config = {
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {
-      useCreateIndex: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useCreateIndex: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
       // writeConcern: {w:'majorityAppleProduct-operationalDB'},
-      useFindAndModify: false
+      // useFindAndModify: false
     },
     databaseName: envVars.DB_NAME
   },

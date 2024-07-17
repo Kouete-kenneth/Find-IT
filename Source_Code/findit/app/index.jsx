@@ -194,7 +194,7 @@ export default function App() {
                             <View className="flex-row justify-between items-center">
                                 <View className="flex-row justify-start gap-x-2 items-center">
                                     <Image className="rounded-full" source={review.image} style={{ width: 40, height: 40 }} />
-                                    <Text className="text-secondary">{review.name}</Text>
+                                    <Text className="text-primary">{review.name}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
                                 {[...Array(review.rating)].map((_, index) => (

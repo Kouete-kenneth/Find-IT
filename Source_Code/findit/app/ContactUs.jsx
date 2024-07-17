@@ -55,7 +55,7 @@ const ContactUs = () => {
             </View>
             <View className=' space-x-2 mb-4 flex-row'>
                <FontAwesome name='envelope' size={20} color='#7454F4'/>
-               <Text className=''>example.gmail.com</Text>
+               <Text className=''>kouete678@gmail.com</Text>
             </View>
             <View className=' space-x-2 mb-4 flex-row'>
                <FontAwesome name='facebook-square' size={20} color='#7454F4'/>
@@ -84,16 +84,11 @@ const ContactUs = () => {
                 </View>
             </View>
             <TouchableOpacity className="w-full bg-primary py-1 rounded-md font-mRoboto mb-4" onPress={handleSubmit}>
-              <Text className="text-center text-white text-lg ">Send</Text>
+              <Text className="text-center text-white text-lg ">Send Mail</Text>
             </TouchableOpacity>
           </View>
         </View>
-        
-        
       </ScrollView>
-      <View className="bg-purple-500 p-4 w-full">
-          <Text className="text-white text-center">All rights reserved, Findit</Text>
-        </View>
     </SafeAreaView>
   )
 }

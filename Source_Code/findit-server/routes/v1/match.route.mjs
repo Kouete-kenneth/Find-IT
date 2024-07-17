@@ -5,7 +5,7 @@
 // import axios from 'axios';
 // import fs from 'fs/promises';
 // import { unlink } from 'fs/promises';
-import express from 'express';
+import express, { text } from 'express';
 // const upload = multer({ dest: 'uploads/' });
 import stringSimilarity from 'string-similarity'
 const router = express.Router();
@@ -13,9 +13,14 @@ router.post('/'/*, upload.single('image')*/, async (req, res) => {
 //   const uploadedImagePath = req.file.path;
     // const {sentence1, sentence2}=req.body
     const { targetimage, matchArray } = req.body;
+   const matchDescArray=matchArray.map((text) =>text.toLowerCase())
+   const targetDescription=targetimage.toLowerCase()
    try {
     // const similarity = stringSimilarity.compareTwoStrings(sentence1, sentence2);
-    const matches = stringSimilarity.findBestMatch(targetimage,matchArray);
+    const matches = stringSimilarity.findBestMatch(
+      targetDescription,
+      matchDescArray
+   );
       res.send(matches);
    } catch (error) {
     res.send(error.message);

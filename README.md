@@ -46,7 +46,8 @@ System Design
 Database Design
 UI/UX design
 Implementation
-  Frontend Development
-  Backend Development
-  Image Matching and Object detection Model development 
-  Natural Language Processing Model Development 
+  Frontend Development with react native
+  Backend Development with nodejs
+  Image Matching and Object detection Model development with Python(TensorFlow)
+  Natural Language Processing Model Development(Python, Deep Learning) 
+  Intergration, Testing and Quality Assurance

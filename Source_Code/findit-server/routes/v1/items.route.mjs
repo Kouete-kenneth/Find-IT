@@ -7,24 +7,33 @@ import {
     getAllItemsController,
     searchItemsByDescriptionController
 } from '../../controllers/item.controller.mjs';
+import{
+    createItem,
+    updateItem,
+    searchItemsByDescription,
+    getItem,
+    deleteItem
+  } from '../../validations/item.validation.mjs'
+import validate from '../../middlewares/validate.mjs';
+
 const router = express.Router();
 
 // Route to create a new item
-router.post('/', createItemController);
+router.post('/',validate(createItem), createItemController);
 
 // Route to get all items
 router.get('/',getAllItemsController);
 
 // Route to get a specific item by ID
-router.get('/description', searchItemsByDescriptionController);
+router.get('/itemdescription',validate(searchItemsByDescription), searchItemsByDescriptionController);
 
 // Route to get a specific item by ID
-router.get('/:id', getItemByIdController);
+router.get('/:id',validate(getItem), getItemByIdController);
 
 // Route to update an item by ID
-router.put('/:id', updateItemByIdController);
+router.put('/:id',validate(updateItem), updateItemByIdController);
 
 // Route to delete an item by ID
-router.delete('/:id', deleteItemByIdController);
+router.delete('/:id',validate(deleteItem), deleteItemByIdController);
 
 export default router;

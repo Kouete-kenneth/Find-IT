@@ -10,30 +10,44 @@ import { createNewItem } from '../../lib/items';
 import backendBaseURL from '../../utils/backendBaseURL';
 import handleApiError from '../../utils/handleApiError';
 import Navbar from '../../components/navbar.jsx';
+
+import { storage } from '../../lib/firebaseConfig.js';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 const Home = () => {
   const refScrollView = useRef(null);
 
-  // const [inputValueselect, setInputValueselect] = useState('');
+  const [uploadmessage, setUploadMessage]=useState('')
+  const [searchMessage, setSearchMessage]=useState('')
+
   const [missingLocation, setMissingLocation] = useState('');
   const [missingDescription, setMissingDescription] = useState('');
   const [missingTime, setMissingTime] = useState('');
+
   const [foundLocation, setFoundLocation] = useState('');
   const [foundDescription, setFoundDescription] = useState('');
   const [foundTime, setFoundTime] = useState('');
+
+  const [currentLocationTown, setCurrentLocationTown] = useState('');
+  const [currentLocationQuarter, setCurrentLocationQuarter] = useState('');
+  const [currentLocationActual, setCurrentLocationActual] = useState('');
+  const [currentLocationContactPersonTel, setCurrentLocationContactPersonTel] = useState('');
+
   const [uploadSelectedImage, setuploadSelectedImage] = useState(null);
   const [searchSelectedImage, setSearchSelectedImage]=useState(null);
+
   const [match, setMatch]=useState(false)
   const [imageUrl,setImageUrl]=useState('');
   const [matchImageURLs,setMatchImageURL]=useState([]);
   const [foundUploadResponse, setFoundUploadResponse]=useState(null)
 
-  // const [targetimage, setTargetImage] = useState('');
-  // const [matchArray, setMatchArray] = useState([]);
   const [results, setResults] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [itemDesc,setItemsDesc]=useState('');
-  
+
+  const [itemDescArray,setItemsDescArray]=useState([]);
+
   const searchPickImage= async()=> {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -68,6 +82,7 @@ const Home = () => {
 
     if (!result.canceled) {
       setuploadSelectedImage(result.assets[0]);
+      console.log(result)
     }
   };
   const shareImage = async () => {
@@ -82,33 +97,93 @@ const Home = () => {
   const handleUploadFound=async(event)=>{
     event.preventDefault();
     try {
+      if (uploadSelectedImage == null) {
+        setUploadMessage('please select an image')
+        setError(true)
+        return
+      };
+      setLoading(true)
+
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', uploadSelectedImage.uri, true);
+        xhr.send(null);
+      });
+  
+      const storageRef = ref(storage, 'images/' + uploadSelectedImage.fileName);
+      const snapshot = await uploadBytes(storageRef, blob);
+  
+      // We're done with the blob, close and release it
+      blob.close();
+      const url = await getDownloadURL(snapshot.ref);
+      console.log('Download URL: ', url);
       // const imageurl=await uploadFile(uploadSelectedImage,'image');
-      setImageUrl('https://cloud.appwrite.io/v1/storage/buckets/668a965e003a0df0cf74/files/6692afbe001774c8251f/view?project=665df1ef0031b59f137e&mode=admin')
-      const response= await createNewItem({
-      imageURL: imageUrl,
-      description: foundDescription,
-      location: foundLocation,
-      type: "found",
-     });
-     if (response && imageUrl) {
-      setFoundUploadResponse(response)
-      setFoundDescription('')
-      setFoundLocation('');
-      setFoundTime('')
-      setuploadSelectedImage(null);
-      alert('image upload succesful');
-     }
+      if (!url) {
+        setUploadMessage("Couldn't get image url, try again");
+        setError(true)
+        return
+      }
+      else{
+        setImageUrl(url)
+      }
+      try {
+        const createItemResponse = await createNewItem({
+          imageURL: url,
+          description: foundDescription.toLowerCase(),
+          type: "found",
+          contactPersonContact: currentLocationContactPersonTel,
+          missingLocation: foundLocation.toLowerCase(),
+          currentLocation: {
+            townOrVillage: currentLocationTown.toLowerCase(),
+            quarter: currentLocationQuarter.toLowerCase(),
+            specificPlace: currentLocationActual.toLowerCase()
+          }
+        },setUploadMessage,setError);
+        if (createItemResponse) {
+          setFoundUploadResponse(createItemResponse);
+          setFoundDescription('');
+          setFoundLocation('');
+          setFoundTime('');
+          setuploadSelectedImage(null);
+          setCurrentLocationActual('');
+          setCurrentLocationContactPersonTel('');
+          setCurrentLocationQuarter('');
+          setCurrentLocationTown('');
+          alert('Item upload successful');
+          setError(false)
+          setUploadMessage('Item upload successful')
+          setTimeout(() => {
+            setUploadMessage('')
+          }, 5000);
+          
+        } else {
+          throw Error
+        }
+    
+      } catch (error) {
+        setUploadMessage( handleApiError(error,setError));
+      }
+      
     } catch (error) {
-      console.log('error: ', error);
+      setUploadMessage(handleApiError(error, setError))
+    } finally {
+      setLoading(false);
     }
   }
-
   useEffect(() => {
     const getItems = async () => {
       try {
         const response = await backendBaseURL.get('/items');
         const descriptionArray = response.data.map(item => item.description); // Extracting description strings
-        setItemsDesc(descriptionArray); // Setting state to array of descriptions
+        setItemsDescArray(descriptionArray); // Setting state to array of descriptions
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -119,38 +194,39 @@ const Home = () => {
     getItems();
   }, [searchSelectedImage]);
 
-      const handleSearchMissingItem = async () => {
+  const handleSearchMissingItem = async () => {
         try {
           const matchResponse = await backendBaseURL.post('/match', {
             targetimage: missingDescription, 
-            matchArray: itemDesc
+            matchArray: itemDescArray
           });
-          
+          console.log(matchResponse.data.rating);
            // Process the response to filter matches with rating >= 0.6 and sort them
         const filteredMatches = matchResponse.data.ratings.filter(item => item.rating >= 0.5);
         const sortedMatches = filteredMatches.sort((a, b) => b.rating - a.rating);
 
 
-          // console.log('SORTED MATCHES:  ',sortedMatches[0].target);
-        // Extract targets from sorted matches
         const targets = sortedMatches.map(match => match.target);
-        // Fetch image URLs for each target
-        // Initialize an array to hold the image URL fetch 
-        const imageurls = [];
-        // Fetch image URLs for each target using map
-        await Promise.all(targets.map(async (description) => {
-          try {
-            const response = await backendBaseURL.get(`/items/description?description=${encodeURIComponent(description)}`);
-              imageurls.push(response.data.imageURL);
-          } catch (error) {
-            console.error('Error fetching image URL for target:', description, error);
-            handleApiError(error,setError)
-            imageurls.push(null);
-          }
-        }));
-        setMatchImageURL(imageurls)
-        // console.log('URL:',imageurls,' TARGETS:',targets,'SROTED MATCH:', response.data)
-
+        // Initialize an array to hold the image URLs
+        const imageurls = new Array(targets.length).fill(null);
+        
+        // Fetch image URLs for each target using map and Promise.all
+        console.log('TARGETS: ', targets);
+        await Promise.all(
+          targets.map(async (description, index) => {
+            try {
+              const response = await backendBaseURL.get(`/items/itemdescription?description=${encodeURIComponent(description)}`);
+              imageurls[index] = response.data.imageURL;
+            } catch (error) {
+              console.error('Error fetching image URL for target:', description, error);
+              setSearchMessage(handleApiError(error, setError));
+              imageurls[index] = null;
+            }
+          })
+        );
+        
+        console.log('Image URLs: ', imageurls);
+        setMatchImageURL(imageurls);
         // Prepare the final sorted array with image URLs
         const processedResults = {
           ratings: sortedMatches.map((match, index) => ({
@@ -170,11 +246,7 @@ const Home = () => {
         } catch (error) {
           console.error(error.message);
         }
-      };
-
-      
-
-    
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -188,13 +260,13 @@ const Home = () => {
                 </Pressable>
 
                 {/* Report Tab */}
-                <Pressable className="items-center flex-1 border-2 rounded-md border-gray-300" style={{height:'100%'}} onPress={()=>refScrollView.current.scrollTo({ x: 0, y: 650 })}>
+                <Pressable className="items-center flex-1 border-2 rounded-md border-gray-300" style={{height:'100%'}} onPress={()=>refScrollView.current.scrollTo({ x: 0, y: 850 })}>
                     <Text className="text-blue-500 text-4xl p-2">🔍</Text>
                     <Text className="text-sm">Search Missing Object</Text>
                 </Pressable>
             </View>
-            <View className="w-full px-6 py-1">
-                <Text className="mb-4 font-mRoboto text-2xl">Upload Found Object</Text>
+            <View className="w-full px-6 py-1">{/** Upload found Item */}
+                <Text className="font-mRoboto text-2xl bg-bgsecondary p-2 rounded-md shadow-md shadow-black">Upload Found Object</Text>
                 {!uploadSelectedImage &&(
                   <View className="w-full gap-y-2 flex-col justify-center items-center border-bgsecondary border-2 mb-2 p-2 rounded-lg bg-slate-50 " style={{height:200}}>
                     <TouchableOpacity onPress={takePicture} className="flex-col justify-center items-center gap-y-1 bg-slate-100 p-2 w-full rounded-md">
@@ -216,34 +288,112 @@ const Home = () => {
                     />
                   </View>
                 )}
-                <TextInput
-                  className="w-full rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+              <View className='w-full'>{/** About Item */}
+                  <View className='flex-row gap-2'>
+                    <TextInput
+                      className="flex-1 rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      placeholder="Picked At what time?"
+                      onChangeText={(text)=>{setFoundTime(text)}}
+                      value={foundTime}
+                    />
+                    <TextInput
+                      className="flex-1 rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      placeholder="where ?..."
+                      onChangeText={(text)=>{setFoundLocation(text)}}
+                      value={foundLocation}
+                    />
+                  </View>
+                  <TextInput
+                  className="w-full rounded-lg border-2 p-2 border-bgsecondary"
                   style={{  }}
-                  placeholder="At what time did you pick the object?..."
-                  onChangeText={(text)=>{setFoundTime(text)}}
-                  value={foundTime}
+                  placeholder="briefly describe the object..."
+                  onChangeText={(text)=>{setFoundDescription(text)}}
+                  value={foundDescription}
                 />
-                <TextInput
-                  className="w-full rounded-lg border-2 p-2 mb-2 border-bgsecondary"
-                  style={{  }}
-                  placeholder="where did you pick the object?..."
-                  onChangeText={(text)=>{setFoundLocation(text)}}
-                  value={foundLocation}
-                />
-                <TextInput
-                className="w-full rounded-lg border-2 p-2 border-bgsecondary"
-                style={{  }}
-                placeholder="describe the object..."
-                onChangeText={(text)=>{setFoundDescription(text)}}
-                value={foundDescription}
-              />
-              <View className="w-full p-3 flex-row justify-evenly items-center mt-3">
+              </View>
+              <View className=' w-full border border-gray-300 p-3 rounded-lg mt-4'>{/** Current item location */}
+                  <View className='w-full flex justify-center items-center mb-4'>
+                      <Text className='font-mRoboto text-center text-sm'>Fill information on item's Current Location</Text>
+                      <Text className='text-xs text-center text-gray-400'>The information help the owner track the item online</Text>
+                  </View>
+                  <View className='w-full flex-col items-center'>
+                      <View className='flex-row w-full'>
+                          <View className='flex-1 mr-2 rounded-md p-2'>
+                              <Text className='mb-2'>Town or Locality *</Text>
+                              <View>
+                                <TextInput
+                                  placeholder='eg. molyko'
+                                  className='text-xs border p-1 border-gray-200 rounded-md'
+                                  onChangeText={(text)=>{setCurrentLocationTown(text)}}
+                                  value={currentLocationTown}
+                                />
+                              </View>
+                          </View>
+                          <View className='flex-1 p-2'>
+                            <View>
+                                <Text className='mb-2'>Quarter *</Text>
+                                <View>
+                                  <TextInput
+                                    className='text-xs border p-1 border-gray-200 rounded-md'
+                                    placeholder='e.g.dirty South'
+                                    onChangeText={(text)=>{setCurrentLocationQuarter(text)}}
+                                    value={currentLocationQuarter}
+                                  />
+                                </View>
+                            </View>
+                          </View>
+                      </View>
+                      <View className='flex-row w-full'>
+                          <View className='flex-1 mr-2 rounded-md p-2'>
+                              <Text className='mb-2'>actual Location *</Text>
+                              <View>
+                                <TextInput
+                                  placeholder='e.g. Veras City'
+                                  className='text-xs border p-1 border-gray-200 rounded-md'
+                                  onChangeText={(text)=>{setCurrentLocationActual(text)}}
+                                  value={currentLocationActual}
+                                />
+                              </View>
+                          </View>
+                          <View className='flex-1 p-2'>
+                            <View>
+                                <Text className='mb-2'>Contact person *</Text>
+                                <View>
+                                  <TextInput
+                                    className='text-xs border p-1 border-gray-200 rounded-md'
+                                    placeholder='phone number'
+                                    onChangeText={(text)=>{setCurrentLocationContactPersonTel(text)}}
+                                    value={currentLocationContactPersonTel}
+                                  />
+                                </View>
+                            </View>
+                          </View>
+                      </View>
+                  </View>
+              </View>
+              {(uploadmessage && error) &&(
+                <View className='mt-2 mb-2 p-3 w-full'>
+                  <Text className='text-amber-700 text-justify'>
+                      {uploadmessage}
+                  </Text>
+                </View>
+              )}
+              {(uploadmessage && !error) && (
+                <View className='mt-2 mb-2 p-3 w-full'>
+                  <Text className=' text-green-700 text-justify'>
+                      {uploadmessage}
+                  </Text>
+                </View>
+              )}
+              <View className="w-full flex-row mt-3">{/** upload */}
                  <TouchableOpacity className="flex-1 mr-2  p-3 rounded-lg border-2 border-bgsecondary"><Text className="font-mRoboto text-center text-lg">Cancel</Text></TouchableOpacity>
                  <TouchableOpacity className=" bg-primary ml-2 rounded-lg flex-1 p-3"><Text className="font-mRoboto text-[#ffffff] text-center text-lg" onPress={handleUploadFound}>Upload</Text></TouchableOpacity>
               </View>
             </View>
-            <View className="w-full px-6 py-1">
-              <Text className="font-mRoboto text-2xl">Upload Missing Object</Text>
+            <View className="w-full px-6 py-1 mt-8">{/** search missing item */}
+              <Text className="font-mRoboto text-2xl bg-bgsecondary p-2 rounded-md shadow-md shadow-black">Search Missing Object</Text>
               <Text className="text-slate-300 mb-4">we use AI to help you Find similar Objects</Text>
               {!searchSelectedImage &&(
                 <TouchableOpacity onPress={searchPickImage} className="w-full flex-col justify-center items-center bg-slate-100 border-bgsecondary border-2 mb-2 p-2 rounded-lg " style={{height:150}}>
@@ -294,19 +444,33 @@ const Home = () => {
 
                   }
                 </View>
-                <Text className="font-mRoboto text-lg mb-2">Max Result</Text>
-                <View className="flex-row justify-evenly items-center gap-5 w-full p-2 px-0">
+                <Text className="font-mRoboto text-lg mb-4 mt-4">Max Result</Text>
+                <View className="flex-row gap-x-2 box-border w-full">
                   <TouchableOpacity className="flex-1 ml-0 bg-bgsecondary p-2 rounded-md"><Text className="text-center text-lg font-bold">1</Text></TouchableOpacity>
                   <TouchableOpacity className="flex-1 bg-bgsecondary p-2 rounded-md"><Text className="text-center text-lg font-bold">3</Text></TouchableOpacity>
                   <TouchableOpacity className="flex-1 bg-bgsecondary p-2 rounded-md"><Text className="text-center text-lg font-bold">5</Text></TouchableOpacity>
                   <TouchableOpacity className="flex-1 p-2 bg-bgsecondary rounded-md"><Text className="text-center text-lg font-bold text-primary">All</Text></TouchableOpacity>
                 </View>
-                <View className="w-full p-3 flex-row justify-evenly items-center mt-3">
+                {(searchMessage && error) &&(
+                <View className='mt-2 mb-2 p-3 w-full'>
+                  <Text className='text-amber-700 text-justify'>
+                      {searchMessage}
+                  </Text>
+                </View>
+              )}
+              {(searchMessage && !error) && (
+                <View className='mt-2 mb-2 p-3 w-full'>
+                  <Text className=' text-green-700 text-justify'>
+                      {searchMessage}
+                  </Text>
+                </View>
+              )}
+                <View className="w-full flex-row mt-4 mb-6">
                  <TouchableOpacity className="flex-1 mr-2  p-3 rounded-lg border-2 border-bgsecondary"><Text className="font-mRoboto text-center text-lg">Cancel</Text></TouchableOpacity>
                  <TouchableOpacity className=" bg-primary ml-2 rounded-lg flex-1 p-3"><Text className="font-mRoboto text-[#ffffff] text-center text-lg" onPress={handleSearchMissingItem}>Search</Text></TouchableOpacity>
                 </View>             
                   {match && (
-                    <View className="container mx-au">
+                    <View className="container mx-au rounded-lg">
                     <Text className="text-2xl font-bold mb-4 mt-3">Search Results</Text>
                     <View className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {results.ratings.map((result, index) => (
@@ -334,7 +498,7 @@ const Home = () => {
                     
                   )}
                   {!match && (
-                      <View className="flex-col gap-y-2 bg-bgsecondary p-6 items-center">
+                      <View className="flex-col gap-y-2 bg-bgsecondary p-6 items-center rounded-lg">
                       <Image
                       className="w-full rounded-lg"
                       source={require('../../assets/images/no found.jpg')}
@@ -346,17 +510,19 @@ const Home = () => {
                   )}
               
             </View>
-            <View className="w-full flex-col justify-center items-center border-bgsecondary mt-0  mb-2 p-2 rounded-lg " style={{height:200}}>
-                <View className="flex-col justify-center items-center gap-y-1 w-full h-full  mb-4">
+            <View className="w-full flex-col justify-center items-center  mt-0 p-6" style={{height:200}}>{/** Track on map */}
+                <View className="flex-col justify-center items-center rounded-lg border-bgsecondary gap-y-1 w-full h-full">
                   <Image
-                    className="w-ful h-fulll"
+                    className="w-full h-full"
                     source={require('../../assets/images/map.jpg')}
-                    style={{height:150}}
+                    resizeMode='cover'
                   />
                 </View>
                 
             </View>
-            <TouchableOpacity className="mt-1 mb-2 rounded-lg p-3 bg-bgsecondary"><Text className="text-primary">Track Location</Text></TouchableOpacity>
+            <View className='w-full px-6'>{/**track button */}
+              <TouchableOpacity className="w-full mb-2 rounded-lg p-3 bg-bgsecondary"><Text className="text-primary text-center text-lg font-bold">Track Location</Text></TouchableOpacity>
+            </View>
         </ScrollView>
     </SafeAreaView>
   )

@@ -1,4 +1,5 @@
 
+import httpStatus from "http-status";
 import { 
     createItem,
     getAllItems,
@@ -7,29 +8,37 @@ import {
     deleteItemById,
     searchItemsByDescription
  } from "../services/item.service.mjs";
+ import catchAsync from "../utils/catchAsync.mjs";
 
  /**
  * Controller function to create a new item.
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  */
-const createItemController = async (req, res) => {
+const createItemController = catchAsync(async (req, res) => {
     try {
         const itemData = req.body;
         const newItem = await createItem(itemData);
-        res.status(201).json(newItem);
+        res.status(httpStatus.CREATED).send(newItem);
     } catch (error) {
-        console.error('Error creating item:', error);
-        res.status(500).json({ error: 'Failed to create item' });
+      // Check if it's a validation error
+      if (error.name === 'ValidationError') {
+        // Handle validation error
+        const errors = Object.values(error.errors).map((val) => val.message);
+        return res.status(httpStatus.BAD_REQUEST).json({ error: errors });
+      }
+      // Handle other errors
+      console.error('Error creating user:', error);
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).send('Internal Server Error');
     }
-};
+  });
 
 /**
  * Controller function to get all items.
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  */
-const getAllItemsController = async (req, res) => {
+const getAllItemsController = catchAsync(async (req, res) => {
     try {
         const items = await getAllItems();
         res.send(items);
@@ -37,14 +46,14 @@ const getAllItemsController = async (req, res) => {
         console.error('Error getting items:', error);
         res.status(500).send({ error: 'Failed to retrieve items' });
     }
-};
+})
 
 /**
  * Controller function to get an item by ID.
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  */
-const getItemByIdController = async (req, res) => {
+const getItemByIdController = catchAsync(async (req, res) => {
     const itemId = req.params.id;
     try {
         const item = await getItemById(itemId);
@@ -56,34 +65,36 @@ const getItemByIdController = async (req, res) => {
         console.error('Error getting item by ID:', error);
         res.status(500).json({ error: 'Failed to retrieve item' });
     }
-};
+})
 
 /**
  * Controller function to update an item by ID.
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  */
-const updateItemByIdController = async (req, res) => {
-    const itemId = req.params.id;
-    const updateData = req.body;
-    try {
-        const updatedItem = await updateItemById(itemId, updateData);
-        if (!updatedItem) {
-            return res.status(404).json({ error: 'Item not found' });
+const updateItemByIdController = catchAsync(
+    async (req, res) => {
+        const itemId = req.params.id;
+        const updateData = req.body;
+        try {
+            const updatedItem = await updateItemById(itemId, updateData);
+            if (!updatedItem) {
+                return res.status(404).json({ error: 'Item not found' });
+            }
+            res.json(updatedItem); // Send the updated item as JSON response
+        } catch (error) {
+            console.error('Error updating item by ID:', error);
+            res.status(500).json({ error: 'Failed to update item' });
         }
-        res.json(updatedItem); // Send the updated item as JSON response
-    } catch (error) {
-        console.error('Error updating item by ID:', error);
-        res.status(500).json({ error: 'Failed to update item' });
     }
-};
+)
 
 /**
  * Delete an item by ID.
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  */
-const deleteItemByIdController = async (req, res) => {
+const deleteItemByIdController = catchAsync(async (req, res) => {
     const itemId = req.params.id;
 
     try {
@@ -98,13 +109,14 @@ const deleteItemByIdController = async (req, res) => {
         console.error('Error deleting item by ID:', error);
         res.status(500).json({ error: 'Failed to delete item' });
     }
-};
+});
 
-const searchItemsByDescriptionController = async (req, res) => {
+const searchItemsByDescriptionController = catchAsync( async (req, res) => {
     const description  = req.query.description;
+const desc=description.toLowerCase();
 
     try {
-        const items = await searchItemsByDescription(description);
+        const items = await searchItemsByDescription(desc);
         if (items) {
           res.status(200).send(items);
         } else {
@@ -113,7 +125,7 @@ const searchItemsByDescriptionController = async (req, res) => {
       } catch (error) {
         res.status(500).send({ message: error.message });
       }
-};
+})
 
 
 
