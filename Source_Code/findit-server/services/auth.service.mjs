@@ -27,11 +27,13 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
   if (!refreshTokenDoc) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Token Not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Token not found');
   }
-  console.log('Doc:',refreshTokenDoc)
-  await refreshTokenDoc.remove();
+  console.log('Doc:', refreshTokenDoc);
+  await Token.deleteOne({ _id: refreshTokenDoc._id });
 };
+
+
 
 /**
  * Refresh auth tokens

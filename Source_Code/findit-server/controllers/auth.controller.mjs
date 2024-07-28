@@ -31,7 +31,7 @@ const login = catchAsync(async (req, res,next) => {
 const logout = catchAsync(async (req, res,next) => {
   try {
     await authService.logout(req.body.refreshToken);
-    res.status(httpStatus.OK).send("logout successful");
+    res.status(httpStatus.OK).json("logout successful");
   } catch (error) {
     next(error);
   }

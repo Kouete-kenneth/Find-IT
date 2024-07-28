@@ -98,7 +98,7 @@ const Profile = () => {
 
               <View className="flex-row gap-x-4 items-start mb-4">
                 <View className='pt-2'>
-                  <FontAwesome name="phone" size={24} color="gray" />
+                  <FontAwesome name="map-marker" size={24} color="gray" />
                 </View>
                 <View className="flex-1  border-gray-300 border-b-2">
                   <View className='flex-row flex-1 justify-between'>

@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import logout from '../utils/Authentication/Logout/manualLogout';
+import { useGlobalContext } from '../context/globalContext';
 
 const Menu = () => {
   const [menuVisible, setMenuVisible] = useState(false);
-
+  const { setIsError, setMessage } = useGlobalContext();
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
   };
@@ -13,6 +15,15 @@ const Menu = () => {
   const closeMenu = () => {
     setMenuVisible(false);
   };
+
+  const handleLogout = async(e) => {
+    e.preventDefault()
+    try {
+      await logout(setMessage, setIsError);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <View className="relative flex-1 pl-2">
@@ -75,11 +86,9 @@ const Menu = () => {
                     <Text className='text-center font-Roboto text-xl'> FAQs</Text>
                   </Link>
                 </TouchableOpacity>
-                <TouchableOpacity className="mb-5 flex-row justify-center border-b-2 border-b-slate-200 pb-2 opacity-25">
-                  <Link href="/">
+                <TouchableOpacity className="mb-5 flex-row justify-center items-center border-b-2 border-b-slate-200 pb-2 opacity-25" onPress={handleLogout}>
                     <FontAwesome name="sign-out" size={20} className='text-center font-Roboto text-xl'/>
                     <Text className='text-center font-Roboto text-xl'> Logout</Text>
-                  </Link>
                 </TouchableOpacity>
               </View>
       )}
