@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { useGlobalContext } from '../context/globalContext';
 
@@ -81,7 +81,16 @@ const Profile = () => {
                     />
                   </View>
                   <View>
-                    <Text className='text-primary'>Bind</Text>
+                  {
+                    !userData.phone && (
+                      <Text className='text-primary'>Bind</Text>
+                    )
+                  }
+                  {
+                    userData.phone && (
+                      <FontAwesome name='pencil' size={16} color="#7454f4"/>
+                    )
+                    }
                   </View>
                 </View>
                 

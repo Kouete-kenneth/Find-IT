@@ -28,6 +28,7 @@ const fetchUserData = async (setMessage, setIsError) => {
   }
 
   console.log(userId);
+  console.log(accessToken);
   try {
     const response = await backendBaseURL.get(`/users/${userId}`, {
       headers: {

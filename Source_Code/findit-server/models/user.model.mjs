@@ -24,6 +24,10 @@ const userSchema = mongoose.Schema(
         }
       },
     },
+    profileUrl: {
+      type: String,
+      trim: true,
+    },
     password: {
       type: String,
       required: true,
@@ -48,17 +52,14 @@ const userSchema = mongoose.Schema(
     town: {
       type: String,
       trim: true,
-      default:'no town'
     },
     quarter: {
       type: String,
       trim: true,
-      default:'no quarter'
     },
     phone: {
         type: String,
         trim: true,
-        default:'no number',
     }
   },
   {

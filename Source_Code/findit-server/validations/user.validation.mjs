@@ -9,6 +9,7 @@ const createUser = {
     phone:Joi.string().custom(phoneNumber),
     town: Joi.string(),
     quarter: Joi.string(),
+    profileUrl:Joi.string(),
     role: Joi.string().required().valid('user', 'admin'),
   }),
 };
@@ -41,6 +42,7 @@ const updateUser = {
       phone:Joi.string().custom(phoneNumber),
       town: Joi.string(),
       quarter: Joi.string(),
+      profileUrl:Joi.string(),
       role: Joi.string().valid('user', 'admin'),
     })
     .min(1),
