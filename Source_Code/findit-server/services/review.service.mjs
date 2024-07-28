@@ -54,13 +54,13 @@ const deleteReview = async (reviewId) => {
  * @param {string} username 
  * @returns {Promise<Array>} 
  */
-const getReviewByUserName = async (username) => {
+const getReviewByUserID = async (userID) => {
   try {
-    const reviews = await Review.find({ reviewer_name: username });
+    const reviews = await Review.find({ userId: userID });
     return reviews;
   } catch (error) {
     console.error(error);
-    throw new Error("Error fetching review by username");
+    throw new Error("Error fetching review by user id");
   }
 };
 
@@ -72,12 +72,7 @@ const getReviewByUserName = async (username) => {
  */
 const getReviewByRating = async (rating) => {
   try {
-    const reviews = await Review.find({ user_rating: rating });
-
-    if (!reviews || reviews.length === 0) {
-      throw new Error(`Could not find reviews rated: ${rating}`);
-    }
-
+    const reviews = await Review.find({ rating: rating });
     return reviews;
   } catch (error) {
     console.error(error);
@@ -105,5 +100,5 @@ const getReviewByDateAdded = async (date) => {
   }
 };
 
-export {createReview,getAllReviews,deleteReview,getReviewByUserName,getReviewByRating,getReviewByDateAdded,
+export {createReview,getAllReviews,deleteReview,getReviewByUserID,getReviewByRating,getReviewByDateAdded,
 };

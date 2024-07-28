@@ -1,5 +1,6 @@
 import Notification from '../models/notification.model.mjs';
-
+import ApiError from '../utils/ApiError.mjs'
+import httpStatus from 'http-status';
 /**
  * Create a new notification
  * @param {object} notificationBody
@@ -15,12 +16,6 @@ const createNotification = async (notificationBody) => {
   }
 };
 
-
-/**
- * Get all notifications for a user
- * @param {string} userId
- * @returns {Promise<Array>}
- */
 /**
  * Get all notifications for a user
  * @param {string} userId
@@ -49,6 +44,23 @@ const getAllNotifications = async (userId) => {
 };
 
 /**
+ * Update notification by id
+ * @param {ObjectId} notificationId
+ * @param {Object} updateBody
+ * @returns {Promise<Notification>}
+ */
+const updateNotificationById = async (notificationId, updateBody) => {
+  const notification = await Notification.findById(notificationId);
+  if (!notification) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Notification not found');
+  }
+
+  Object.assign(notification, updateBody);
+  await notification.save();
+  return notification;
+};
+
+/**
  * Delete a notification
  * @param {string} notificationId
  * @returns {Promise<object>}
@@ -67,4 +79,4 @@ const deleteNotification = async (notificationId) => {
   }
 };
 
-export { createNotification, getAllNotifications, deleteNotification };
+export { createNotification, getAllNotifications,updateNotificationById, deleteNotification };

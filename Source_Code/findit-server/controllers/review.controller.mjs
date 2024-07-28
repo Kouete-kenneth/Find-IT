@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import {createReview, getAllReviews,deleteReview,getReviewByUserName,getReviewByProductName, getReviewByRating, getReviewByDateAdded,
+import {createReview, getAllReviews,deleteReview,getReviewByUserID, getReviewByRating, getReviewByDateAdded,
 } from "../services/review.service.mjs";
 
 const reviewController = {
@@ -35,10 +35,10 @@ const reviewController = {
     }
   },
 
-  getReviewByUserName: async (req,res) => {
+  getReviewByUserID: async (req,res) => {
     try {
-      const { username } = req.params;
-      const reviews = await getReviewByUserName(username);
+      const { id } = req.params;
+      const reviews = await getReviewByUserID(id);
 
       res.status(httpStatus.OK).json(reviews);
     } catch (error) {
@@ -46,19 +46,6 @@ const reviewController = {
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send("Error fetching review by username");
     }
   },
-
-  getReviewByProductName: async (req, res) => {
-    try {
-      const { productname } = req.params;
-      const reviews = await getReviewByProductName(productname);
-
-      res.status(httpStatus.OK).json(reviews);
-    } catch (error) {
-      console.error(error);
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).send("Error fetching review by product name");
-    }
-  },
-
   getReviewByRating: async (req, res) => {
     try {
       const { rating } = req.params;

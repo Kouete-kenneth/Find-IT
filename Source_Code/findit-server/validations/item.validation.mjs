@@ -5,6 +5,7 @@ const createItem = {
     imageURL: Joi.string().uri().required().trim(),
     description: Joi.string().required().trim(),
     missingLocation: Joi.string().required().trim(),
+    name: Joi.string().required().trim(),
     currentLocation: Joi.object().keys({
       townOrVillage: Joi.string().trim(),
       quarter: Joi.string().trim(),
@@ -33,6 +34,7 @@ const updateItem = {
       imageURL: Joi.string().uri().optional().trim(),
       description: Joi.string().optional().trim(),
       missingLocation: Joi.string().optional().trim(),
+      name: Joi.string().optional().trim(),
       currentLocation: Joi.object().keys({
         townOrVillage: Joi.string().trim().optional(),
         quarter: Joi.string().trim().optional(),

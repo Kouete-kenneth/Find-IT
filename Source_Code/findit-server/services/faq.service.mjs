@@ -30,50 +30,44 @@ const getAllFAQ = async () => {
 };
 
 /**
- * Delete FAQ by ID
+ * Delete FAQ by MongoDB _id
  * @param {string} id
  * @returns {Promise<object>}
  */
 const deleteFAQ = async (faqId) => {
   try {
-    const faqToDelete = await FAQ.findOne({ faq_id: faqId });
+    const deletedFAQ = await FAQ.findByIdAndDelete(faqId);
 
-    if (!faqToDelete) {
+    if (!deletedFAQ) {
       throw new Error(`Couldn't find FAQ with id: ${faqId}`);
     }
-
-    const deletedFAQ = await FAQ.findByIdAndDelete(faqToDelete._id);
 
     return deletedFAQ;
   } catch (error) {
-    console.error(error);
-    throw new Error("Error deleting FAQ");
+    console.error('Error deleting FAQ:', error);
+    throw new Error('Error deleting FAQ');
   }
 };
+
 
 /**
- * Update a FAQ by ID
- * @param {string} faqId 
- * @param {object} updatedData 
- * @returns {Promise<object>} 
+ * Update an FAQ by MongoDB _id
+ * @param {string} faqId
+ * @param {object} updatedData
+ * @returns {Promise<object>}
  */
 const updateFAQ = async (faqId, updatedData) => {
-  try {
-    const faqToUpdate = await FAQ.findOne({ faq_id: faqId });
-
-    if (!faqToUpdate) {
-      throw new Error(`Couldn't find FAQ with id: ${faqId}`);
-    }
-
-    const updatedFAQ = await FAQ.findByIdAndUpdate(faqToUpdate._id, updatedData, {
-      new: true,
+    const updatedFAQ = await FAQ.findByIdAndUpdate(faqId, updatedData, {
+      new: true, // Return the updated document
     });
 
+    if (!updatedFAQ) {
+      throw new Error(`Couldn't find FAQ with id: ${faqId}`);
+      return
+    }
+
     return updatedFAQ;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Error updating FAQ");
-  }
 };
+
 
 export { createFAQ, getAllFAQ, deleteFAQ, updateFAQ };

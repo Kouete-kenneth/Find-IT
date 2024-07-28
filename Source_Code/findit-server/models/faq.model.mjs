@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 const FAQSchema = new mongoose.Schema(
   {
-        faq_id: {
-          type: String,
-          required: true,
-        },
         question: {
           type: String,
           required: true,
@@ -14,7 +10,6 @@ const FAQSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-
   },
   { timestamps: true }
 );

@@ -19,7 +19,7 @@ const FAQs = () => {
     {
       "faq_id": "2",
       "question": "How do I change my email address?",
-      "answer": "To change your email address, go to your account settings, click on 'Edit Profile', and update your email address."
+      "answer": "To change your email address, contact a sopport agent, you can not change this on your own!!"
     },
     {
       "faq_id": "3",

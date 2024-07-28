@@ -1,9 +1,9 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs,Redirect } from 'expo-router'
 import { FontAwesome } from '@expo/vector-icons';
-
 const TabsLayout = () => {
+  
   return (
     <>
         <Tabs 
