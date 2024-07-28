@@ -1,37 +1,43 @@
-import {createContext, useContext,useState, useEffect, Children } from "react";
+import {createContext, useContext,useState, useEffect} from "react";
 import fetchUserData from "../lib/user.js";
 import handleApiError from '../utils/handleApiError.js';
+import { useNavigation } from "expo-router";
+
 const GlobalContext=createContext();
-export const useGlobalContext=()=>useContext(GlobalContext);
 
 const GlobalProvider=({children})=>{
     const [userData, setUserData] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [message,setMessage]=useState('');
-    const [isError,setIsError]=useState(false)
-    useEffect(()=>{
-        fetchUserData(setMessage,setIsError)
-        .then(userdata=>{
-            if (userdata) {
-                setIsLoggedIn(true)
-                setUserData(userdata)
-            }else{
-                setIsLoggedIn(false)
-                setUserData(null)
-                setIsLoading(false)
-                console.log('ooooops');
-                return null;
-            }
+    const [isError, setIsError] = useState(false)
+    const navigation = useNavigation();
+useEffect(() => {
+  const loadUserData = async () => {
+    const userdata = await fetchUserData(setMessage, setIsError);
+    if (userdata) {
+      setIsLoggedIn(true);
+      setUserData(userdata);
+        setIsLoading(false);
+         navigation.navigate('(Tabs)',{
+            screen:'home'
         })
-        .catch((error)=>{
-           setMessage( handleApiError(error,setIsError));
-        })
-        .finally(()=>{
-            setIsLoading(false);
-        })
-    },[])
-    return(
+        
+    } else {
+      setIsLoggedIn(false);
+        setUserData(null);
+        setIsLoading(false);
+      console.log('ooooops');
+    }
+    
+  };
+
+  loadUserData().catch((error) => {
+    setMessage(handleApiError(error, setIsError));
+    setIsLoading(false);
+  });
+}, []);
+    return (
         <GlobalContext.Provider
             value={{
                 userData,
@@ -50,5 +56,7 @@ const GlobalProvider=({children})=>{
         </GlobalContext.Provider>
     )
 }
+
+export const useGlobalContext=()=>useContext(GlobalContext);
 
 export default GlobalProvider;

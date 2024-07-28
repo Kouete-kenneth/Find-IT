@@ -2,13 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import { Text, View, ScrollView,ImageBackground, Image, Pressable, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, useNavigation } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { FlatList } from 'react-native'
 import Swiper from 'react-native-swiper'
-// import checkifLogin from '../utils/Authentication/Login/checkIfLogin.js'
+import checkifLogin from '../utils/Authentication/Login/checkIfLogin.js'
 // import getLoggedInUserId from '../utils/getUserIdFromAccessToken.js';
 import { useGlobalContext } from '../context/globalContext.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 const reviews = [
     {
       name: 'Jean paul',
@@ -70,9 +70,9 @@ export default function App() {
       ];
       const [isError,setIsError]=useState(false)
       const [message,setMessage]=useState('');
-      const {isLoading,isLoggedIn}=useGlobalContext()
+      const {isLoading,isLoggedIn,setIsLoggedIn}=useGlobalContext()
       const navigation = useNavigation();
-
+      
 const handleGetStart=async()=>{
     
     console.log('LOGIN',isLoggedIn)
@@ -87,6 +87,20 @@ const handleGetStart=async()=>{
    
 }
 
+const handleLoginbtnClicked=async()=>{
+    
+    console.log('LOGIN',isLoggedIn)
+    if (isLoggedIn) {
+        navigation.navigate('(Tabs)',{
+            screen:'home'
+        });
+    }
+    else {
+        navigation.navigate('login')
+    }
+   
+}
+    
   return (
     <SafeAreaView className="flex-1 bg-white">
         {/* Navigation Bar */}
@@ -111,13 +125,10 @@ const handleGetStart=async()=>{
                     </Link>
                 </View>
                 <View className="p-0 hover:bg-gray-200 transition-colors" style={{height:30}}>
-                    <Link href="/login" className="flex justify-center items-center p-2 bg-primary h-8 rounded-md hover:bg-gray-200 transition-colors">
-                        <Image
-                            source={require('../assets/icons/profile_white.png')}
-                            style={{ width: 24, height: 24,resizeMode: 'contain' }} 
-                        />
+                    <TouchableOpacity className="flex-row justify-center items-center p-2 bg-primary h-8 rounded-md hover:bg-gray-200 transition-colors" onPress={handleLoginbtnClicked}>
+                        <FontAwesome name='user-o' size={20} color='#ffffff'/>
                         <Text className="font-bold text-xs text-bgsecondary ml-1">Login</Text>
-                    </Link>
+                    </TouchableOpacity>
                 </View>
                 <View className="p-0   hover:bg-gray-200 transition-colors" style={{height:30}}>
                     <Link href="/menu">

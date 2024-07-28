@@ -6,12 +6,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import handleLogin from '../utils/Authentication/Login/authService';
 import handleApiError from '../utils/handleApiError';
 import { useNavigation } from '@react-navigation/native';
-import useGlobalContext from '../context/globalContext.js'
+import {useGlobalContext} from '../context/globalContext.js'
 
 const Login = () => {
-
   const {setIsLoggedIn,setUserData}=useGlobalContext();
-
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [messagelocal, setMessage] = useState("");
@@ -24,8 +22,10 @@ const Login = () => {
     setMessage("")
     setLoginButtonClicked(true);
     try {
-      await handleLogin({email, password},setMessage,handleApiError,setIsError,setIsLoggedIn,setUserData);
+       const user =await handleLogin({email, password},setMessage,handleApiError,setIsError);
       setMessage("login successful");
+      setUserData(user)
+      setIsLoggedIn(true)
       setIsError(false)
       navigation.navigate('(Tabs)',{
         screen:'home'

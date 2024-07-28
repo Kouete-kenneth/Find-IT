@@ -25,27 +25,24 @@ const RootLayout = () => {
     }
   return (
     <GlobalProvider>
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#f2f2f2',
-          },
-          headerTintColor: '#000',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}>
-          
-        {/* Optionally configure static options outside the route.*/}
-        <Stack.Screen name="index" options={{headerShown:false}} />
-        <Stack.Screen name="(Tabs)" options={{headerShown:false}} />
-      </Stack>
+        <Stack
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#f2f2f2',
+            },
+            headerTintColor: '#000',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+            
+          {/* Optionally configure static options outside the route.*/}
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(Tabs)" options={{headerShown:false}} />
+        </Stack>
     </GlobalProvider>
       
    );
-
-
-  
 }
 
 export default RootLayout

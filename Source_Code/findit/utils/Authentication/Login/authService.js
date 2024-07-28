@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import backendBaseURL from '../../backendBaseURL';
 
-const login = async (formData, setMessage, handleApiError, setIsError,setIsLoggedIn,setUserData) => {
+const login = async (formData, setMessage, handleApiError, setIsError) => {
   
   try {
     const response = await backendBaseURL.post('/auth/login', formData);
@@ -31,14 +31,9 @@ const login = async (formData, setMessage, handleApiError, setIsError,setIsLogge
     await AsyncStorage.setItem('refreshToken', tokens.refresh.token);
 
     setMessage('Login successfully');
-    setIsLoggedIn(true);
-    setUserData(user)
     setIsError(false);
 
-    // Redirect to the specified screen
-    // navigation.navigate(redirectTo);
-
-    return Promise.resolve('Login successful');
+    return user;
   } catch (error) {
     setMessage(handleApiError(error, setIsError));
     setIsError(true);
