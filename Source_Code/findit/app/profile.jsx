@@ -3,8 +3,10 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import { useGlobalContext } from '../context/globalContext';
 
 const Profile = () => {
+  const {userData}=useGlobalContext();
   return (
     <SafeAreaView className='flex-1 bg-white'>
       <ScrollView className='flex-1  p-4'>
@@ -30,7 +32,7 @@ const Profile = () => {
                   <View className='flex-1'>
                     <Text className="text-gray-600">Name</Text>
                     <TextInput
-                      value="kouete kenneth"
+                      value={userData.name}
                       className="py-1"
                       editable={false}
                     />
@@ -50,7 +52,7 @@ const Profile = () => {
                   <View className='flex-1'>
                     <Text className="text-gray-600">Email</Text>
                     <TextInput
-                      value="kouete@gmail.com"
+                      value={userData.email}
                       className="py-1"
                       editable={false}
                     />
@@ -73,7 +75,7 @@ const Profile = () => {
                   <View className='flex-1'>
                     <Text className="text-gray-600">Phone</Text>
                     <TextInput
-                      value="no phone number yet"
+                      value={userData.phone || 'not bind yet' }
                       className="py-1"
                       editable={false}
                     />

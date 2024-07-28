@@ -11,6 +11,9 @@ import Storageroutes from './imageStorage.route.mjs';
 import Itemsroutes from './items.route.mjs';
 import Emailroutes from './email.route.mjs';
 import Marchroutes from './match.route.mjs';
+import FAQRoutes from './faq.routes.mjs';
+import reviewRoutes from './review.route.mjs';
+import historyRoutes from './history.route.mjs';
 const router = express.Router();
 
 const defaultRoutes = [
@@ -47,14 +50,18 @@ const defaultRoutes = [
     route: Marchroutes,
   },
 
-  // {
-  //   path: '/review',
-  //   route: reviewRoute,
-  // },
-  // {
-  //   path: '/testimonial',
-  //   route: testimonialRoute,
-  // },
+  {
+    path: '/review',
+    route: reviewRoutes,
+  },
+  {
+    path: '/faqs',
+    route: FAQRoutes,
+  },
+  {
+    path: '/history',
+    route: historyRoutes,
+  },
 ];
 
 const devRoutes = [

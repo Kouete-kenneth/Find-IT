@@ -6,21 +6,25 @@ import { FontAwesome } from '@expo/vector-icons';
 import handleLogin from '../utils/Authentication/Login/authService';
 import handleApiError from '../utils/handleApiError';
 import { useNavigation } from '@react-navigation/native';
+import useGlobalContext from '../context/globalContext.js'
+
 const Login = () => {
+
+  const {setIsLoggedIn,setUserData}=useGlobalContext();
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [messagelocal, setMessage] = useState("");
   const [loginButtonClicked,setLoginButtonClicked]=useState(false)
-  const [isLoggedIn, setIsLoggedIn]=useState(false);
   const [isError, setIsError]=useState(false);
   const navigation = useNavigation();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("")
     setLoginButtonClicked(true);
     try {
-      await handleLogin({email, password},setMessage,handleApiError,setIsError,setIsLoggedIn);
+      await handleLogin({email, password},setMessage,handleApiError,setIsError,setIsLoggedIn,setUserData);
       setMessage("login successful");
       setIsError(false)
       navigation.navigate('(Tabs)',{

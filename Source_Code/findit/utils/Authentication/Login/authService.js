@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import backendBaseURL from '../../backendBaseURL';
 
-const login = async (formData, setMessage, handleApiError, setIsError, setIsLoggedIn) => {
+const login = async (formData, setMessage, handleApiError, setIsError,setIsLoggedIn,setUserData) => {
+  
   try {
     const response = await backendBaseURL.post('/auth/login', formData);
     const { tokens, user } = response.data;
@@ -31,6 +32,7 @@ const login = async (formData, setMessage, handleApiError, setIsError, setIsLogg
 
     setMessage('Login successfully');
     setIsLoggedIn(true);
+    setUserData(user)
     setIsError(false);
 
     // Redirect to the specified screen

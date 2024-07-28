@@ -1,18 +1,23 @@
 import Joi from "joi";
+import {objectId } from './custom.validation.mjs';
 /**
  * Validation schema for creating Review
  */
 
 const createReviewValidation = {
-  body: Joi.object({
-    review_id: Joi.string().required(),
-    image: Joi.string().required(),
-    product_name: Joi.string().required(),
-    reviewer_name: Joi.string().required(),
-    user_rating: Joi.number(),
-    like: Joi.boolean(),
-    comment: Joi.string(),
-    date_made: Joi.date().required(),
+  body: Joi.object().keys({
+    userId: Joi.string().required().custom(objectId),
+    content: Joi.string().required().trim().messages({
+      'string.empty': '"content" cannot be an empty field',
+      'any.required': '"content" is required',
+    }),
+    rating: Joi.number().required().min(1).max(5).messages({
+      'number.base': '"rating" must be a number',
+      'number.min': '"rating" must be at least 1',
+      'number.max': '"rating" must be at most 5',
+      'any.required': '"rating" is required',
+    }),
+    visibility: Joi.boolean().default(true),
   }),
 };
 
@@ -21,7 +26,7 @@ const createReviewValidation = {
  */
 const deleteReviewValidation = {
   params: Joi.object().keys({
-    review_id: Joi.string().required(),
+    id: Joi.string().required().custom(objectId),
   }),
 };
 

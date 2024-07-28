@@ -15,4 +15,17 @@ const password = (value, helpers) => {
   return value;
 };
 
-export { objectId, password };
+const phoneNumber = (value, helpers) => {
+  // Check if the phone number contains only digits
+  if (!/^\d+$/.test(value)) {
+    return helpers.message('phone number must contain only digits');
+  }
+  // Check if the phone number is exactly 10 digits long
+  if (value.length !== 9) {
+    return helpers.message('phone number must be exactly 10 digits');
+  }
+  return value;
+};
+
+
+export { objectId, password,phoneNumber };

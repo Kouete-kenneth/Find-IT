@@ -24,9 +24,9 @@ const faqController = {
 
  deleteFAQ: async (req, res) => {
   try {
-    const { faq_id } = req.params;
+    const { id } = req.params;
 
-    const deletedFAQ = await deleteFAQ(faq_id);
+    const deletedFAQ = await deleteFAQ(id);
 
     if (deletedFAQ) {
       res.status(httpStatus.OK).json({
@@ -42,20 +42,20 @@ const faqController = {
   }
 },
 
-updateFAQ: async (req, res) => {
+updateFAQ: async (req, res,next) => {
   try {
-    const { faq_id } = req.params;
+    const { id } = req.params;
 
-    const updatedFAQ = await updateFAQ(faq_id, req.body);
+    const updatedFAQ = await updateFAQ(id, req.body);
 
     if (updatedFAQ) {
       res.status(httpStatus.OK).json(updatedFAQ);
     } else {
-      res.status(httpStatus.NOT_FOUND).send(`Couldn't find FAQ with id: ${faq_id}`);
+      res.status(httpStatus.NOT_FOUND).send(`Couldn't find FAQ with id: ${id}`);
     }
   } catch (error) {
     console.error(error);
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).send("Error updating FAQ");
+    next(error)
   }
 },
 };

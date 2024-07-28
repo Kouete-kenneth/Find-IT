@@ -50,6 +50,11 @@ const userSchema = mongoose.Schema(
       trim: true,
       default:'no town'
     },
+    quarter: {
+      type: String,
+      trim: true,
+      default:'no quarter'
+    },
     phone: {
         type: String,
         trim: true,

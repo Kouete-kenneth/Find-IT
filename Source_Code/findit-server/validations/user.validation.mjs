@@ -1,11 +1,14 @@
 import Joi from 'joi';
-import { password, objectId } from './custom.validation.mjs';
+import { password,phoneNumber, objectId } from './custom.validation.mjs';
 
 const createUser = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
+    phone:Joi.string().custom(phoneNumber),
+    town: Joi.string(),
+    quarter: Joi.string(),
     role: Joi.string().required().valid('user', 'admin'),
   }),
 };
@@ -35,6 +38,10 @@ const updateUser = {
       email: Joi.string().email(),
       password: Joi.string().custom(password),
       name: Joi.string(),
+      phone:Joi.string().custom(phoneNumber),
+      town: Joi.string(),
+      quarter: Joi.string(),
+      role: Joi.string().valid('user', 'admin'),
     })
     .min(1),
 };

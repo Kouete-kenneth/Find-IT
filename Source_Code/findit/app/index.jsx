@@ -1,10 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, ScrollView,ImageBackground, Image, Pressable, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
+import { Link, useNavigation } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { FlatList } from 'react-native'
 import Swiper from 'react-native-swiper'
+// import checkifLogin from '../utils/Authentication/Login/checkIfLogin.js'
+// import getLoggedInUserId from '../utils/getUserIdFromAccessToken.js';
+import { useGlobalContext } from '../context/globalContext.js';
+import { useState } from 'react';
 const reviews = [
     {
       name: 'Jean paul',
@@ -26,6 +30,7 @@ const reviews = [
       },
     // Add more reviews as needed
   ];
+
  
   const renderReviewItem = ({ item }) => (
     <View className="flex-row items-center border-b border-gray-300 py-4 px-2">
@@ -63,6 +68,25 @@ export default function App() {
           image: require('../assets/icons/globe.png'),
         },
       ];
+      const [isError,setIsError]=useState(false)
+      const [message,setMessage]=useState('');
+      const {isLoading,isLoggedIn}=useGlobalContext()
+      const navigation = useNavigation();
+
+const handleGetStart=async()=>{
+    
+    console.log('LOGIN',isLoggedIn)
+    if (isLoggedIn) {
+        navigation.navigate('(Tabs)',{
+            screen:'home'
+        });
+    }
+    else {
+        navigation.navigate('onboarding')
+    }
+   
+}
+
   return (
     <SafeAreaView className="flex-1 bg-white">
         {/* Navigation Bar */}
@@ -141,12 +165,11 @@ export default function App() {
                     <Text className="text-sm">Track</Text>
                 </Pressable>
             </View>
+            {/**get started */}
             <View className="flex-1 mt-6 w-full items-center justify-center bg-white px-4">
                 {/* Get Started Button */}
-                <TouchableOpacity className="w-full  bg-primary py-2 rounded-lg items-center">
-                    <Link href="/onboarding">
+                <TouchableOpacity className="w-full  bg-primary py-2 rounded-lg items-center" onPress={handleGetStart}>
                      <Text className="text-white text-[#ffffff] text-lg font-semibold">Get Started</Text>
-                    </Link>
                 </TouchableOpacity>
 
                 {/* Or Text */}
@@ -158,7 +181,7 @@ export default function App() {
                 </Link>
             </View>
 
-            <View className="p-5 w-full">
+            <View className="p-5 w-full">{/**more about findit */}
             <Text className="text-2xl font-bold mb-4">More About FindIt</Text>
                 {features.map((feature, index) => (
                 <View key={index} className="flex-row text-sm items-center mb-4 border-b border-gray-300 pb-4">

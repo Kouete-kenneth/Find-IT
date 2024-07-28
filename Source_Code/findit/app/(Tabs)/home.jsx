@@ -13,9 +13,12 @@ import Navbar from '../../components/navbar.jsx';
 
 import { storage } from '../../lib/firebaseConfig.js';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useGlobalContext } from '../../context/globalContext.js';
 
 const Home = () => {
   const refScrollView = useRef(null);
+
+  const {userData}=useGlobalContext()
 
   const [uploadmessage, setUploadMessage]=useState('')
   const [searchMessage, setSearchMessage]=useState('')
@@ -23,10 +26,12 @@ const Home = () => {
   const [missingLocation, setMissingLocation] = useState('');
   const [missingDescription, setMissingDescription] = useState('');
   const [missingTime, setMissingTime] = useState('');
+  const [missingName, setMissingName] = useState('');
 
   const [foundLocation, setFoundLocation] = useState('');
   const [foundDescription, setFoundDescription] = useState('');
   const [foundTime, setFoundTime] = useState('');
+  const [foundName, setFoundName] = useState('');
 
   const [currentLocationTown, setCurrentLocationTown] = useState('');
   const [currentLocationQuarter, setCurrentLocationQuarter] = useState('');
@@ -141,6 +146,7 @@ const Home = () => {
           type: "found",
           contactPersonContact: currentLocationContactPersonTel,
           missingLocation: foundLocation.toLowerCase(),
+          itemName:foundName,
           currentLocation: {
             townOrVillage: currentLocationTown.toLowerCase(),
             quarter: currentLocationQuarter.toLowerCase(),
@@ -305,13 +311,26 @@ const Home = () => {
                       value={foundLocation}
                     />
                   </View>
-                  <TextInput
-                  className="w-full rounded-lg border-2 p-2 border-bgsecondary"
-                  style={{  }}
-                  placeholder="briefly describe the object..."
-                  onChangeText={(text)=>{setFoundDescription(text)}}
-                  value={foundDescription}
-                />
+                  <View className='flex-row gap-2'>
+                      <TextInput
+                      className="flex-1 text-center text-xs rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      multiline={true}
+                      numberOfLines={2}
+                      placeholder="what is the item in one word ?"
+                      onChangeText={(text)=>{setFoundName(text)}}
+                      value={foundName}
+                      />
+                      <TextInput
+                      className="rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      multiline={true}
+                      numberOfLines={2}
+                      placeholder="briefly describe the object..."
+                      onChangeText={(text)=>{setFoundDescription(text)}}
+                      value={foundDescription}
+                      />
+                  </View>
               </View>
               <View className=' w-full border border-gray-300 p-3 rounded-lg mt-4'>{/** Current item location */}
                   <View className='w-full flex justify-center items-center mb-4'>
@@ -411,27 +430,44 @@ const Home = () => {
                   />
                 </TouchableOpacity>
               )}
-                <TextInput
-                  className="w-full rounded-lg border-2 p-2 mb-2 border-bgsecondary"
-                  style={{  }}
-                  placeholder="At what time did your object get missing?..."
-                  onChangeText={(text)=>{setMissingTime(text)}}
-                  value={missingTime}
-                />
-                <TextInput
-                  className="w-full rounded-lg border-2 p-2 mb-2 border-bgsecondary"
-                  style={{  }}
-                  placeholder="where did your get the missing?..."
-                  onChangeText={(text)=>{setMissingLocation(text)}}
-                  value={missingLocation}
-                />
-                <TextInput
-                  className="w-full rounded-lg border-2 p-2 border-bgsecondary"
-                  style={{  }}
-                  placeholder="describe the object..."
-                  onChangeText={(text)=>{setMissingDescription(text)}}
-                  value={missingDescription}
-                />
+              <View className='w-full'>{/**about missing item*/}
+              <View className='flex-row gap-2'>
+                    <TextInput
+                      className="flex-1 rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      placeholder="Lost At what time?"
+                      onChangeText={(text)=>{setMissingTime(text)}}
+                      value={missingTime}
+                    />
+                    <TextInput
+                      className="flex-1 rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      placeholder="where ?..."
+                      onChangeText={(text)=>{setMissingLocation(text)}}
+                      value={missingLocation}
+                    />
+                  </View>
+                  <View className='flex-row gap-2'>
+                      <TextInput
+                      className="flex-1 text-center text-xs rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      multiline={true}
+                      numberOfLines={2}
+                      placeholder="what is the item in one word ?"
+                      onChangeText={(text)=>{setFoundName(text)}}
+                      value={foundName}
+                      />
+                      <TextInput
+                      className="rounded-lg border-2 p-2 mb-2 border-bgsecondary"
+                      style={{  }}
+                      multiline={true}
+                      numberOfLines={2}
+                      placeholder="briefly describe the object..."
+                      onChangeText={(text)=>{setMissingDescription(text)}}
+                      value={missingDescription}
+                      />
+                  </View>
+              </View>
                 <View className="flex-row w-100 rounded-md justify-center items-center">
                   {searchSelectedImage && (
                     <TouchableOpacity className="flex-row gap-2 my-4 rounded-md bg-bgsecondary w-20 ml-0.5 p-0" onPress={shareImage}>

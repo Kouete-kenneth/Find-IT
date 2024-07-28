@@ -1,4 +1,5 @@
-import { createNotification, getAllNotifications, deleteNotification } from '../services/notification.service.mjs';
+import { createNotification, getAllNotifications,updateNotificationById, deleteNotification } from '../services/notification.service.mjs';
+import httpStatus from 'http-status';
 
 /**
  * Controller function to create a new notification
@@ -66,4 +67,23 @@ const removeNotification = async (req, res, next) => {
   }
 };
 
-export { addNotification, getNotifications, removeNotification };
+/**
+ * Controller to handle updating a notification by ID.
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
+const updateNotification = async (req, res, next) => {
+  try {
+    const { notificationId } = req.params;
+    const updateBody = req.body;
+
+    const updatedNotification = await updateNotificationById(notificationId, updateBody);
+
+    res.status(httpStatus.OK).json(updatedNotification);
+  } catch (error) {
+    next(error); // Pass the error to the next middleware
+  }
+};
+
+export { addNotification, getNotifications, removeNotification,updateNotification };
