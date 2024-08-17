@@ -21,17 +21,26 @@ const createNotification = async (notificationBody) => {
  * @param {string} userId
  * @returns {Promise<Array>}
  */
+/**
+ * Get all notifications for a user
+ * @param {string} userId
+ * @returns {Promise<Array>}
+ */
 const getAllNotifications = async (userId) => {
   try {
-    const notifications = await Notification.find({
-      // $or: [
-      //   { userId }, // User is the direct recipient
-        recipientType: 'everyone' // Notification is sent to everyone
-         // User is in the chosen recipients list
-      // ],
-    });
-    
-    return notifications; // Always return the notifications array, even if it's empty
+    // Fetch notifications where userId matches the given userId
+    const userNotifications = await Notification.find({ userId });
+
+    // Fetch notifications where recipientType is 'everyone'
+    const everyoneNotifications = await Notification.find({ recipientType: 'everyone' });
+
+    // Fetch notifications where recipientType is 'chosen' and the user is in the recipients array
+    const chosenNotifications = await Notification.find({ recipientType: 'chosen', recipients: userId });
+
+    // Aggregate all notifications into a single array
+    const allNotifications = [...userNotifications, ...everyoneNotifications, ...chosenNotifications];
+
+    return allNotifications;
   } catch (error) {
     console.error('Error fetching notifications:', error.message);
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error fetching notifications');
