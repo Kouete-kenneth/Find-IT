@@ -6,6 +6,8 @@ import { Link } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
 import Menu from '../../components/menu';
 import Navbar from '../../components/navbar';
+import fetchFAQData from '../../lib/help';
+import { useGlobalContext } from '../../context/globalContext';
 
 const FAQs = () => {
   const [faqs, setFaqs] = useState([]);
@@ -37,22 +39,21 @@ const FAQs = () => {
       "answer": "To update your profile picture, go to your account settings, click on 'Edit Profile', and upload a new profile picture."
     }
   ];
-  // useEffect(() => {
-  //   // Fetch FAQs from the backend
-  //   backendBaseURL.get('/faqs')
-  //     .then(response => {
-  //       if (response) {
-  //         setFaqs(response.data)
-  //       }
-         
-  //     })
-  //     .catch(error => console.error(error))
-  // }, []);
-
+  const {userData,setMessage,setIsError}=useGlobalContext()
   useEffect(() => {
-    setFaqs(data);
-  }, []);
-  
+    const loadData = async() => {
+      try {
+        const faqs = await fetchFAQData(setMessage,setIsError)
+        if (faqs) {
+          setFaqs(faqs);
+          console.log(faqs)
+          } 
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    loadData();
+  }, [])  
   const toggleExpand = (faq_id) => {
     setExpanded(prevState => ({
       ...prevState,
@@ -76,15 +77,15 @@ const FAQs = () => {
           />
         </View>
         {faqs.map((faq) => (
-          <View key={faq.faq_id} className="mb-4">
+          <View key={faq._id} className="mb-4">
             <TouchableOpacity
               className=" bg-bgsecondary p-4 rounded flex flex-row justify-between items-center"
-              onPress={() => toggleExpand(faq.faq_id)}
+              onPress={() => toggleExpand(faq._id)}
             >
               <Text>{faq.question}</Text>
-              {expanded[faq.faq_id] ? <FontAwesome name='chevron-up' size={20} color="gray" /> : <FontAwesome name="chevron-down" size={20} color="gray" />}
+              {expanded[faq._id] ? <FontAwesome name='chevron-up' size={20} color="gray" /> : <FontAwesome name="chevron-down" size={20} color="gray" />}
             </TouchableOpacity>
-            {expanded[faq.faq_id] && (
+            {expanded[faq._id] && (
               <View className="bg-gray-200 p-4">
                 <Text>{faq.answer}</Text>
               </View>

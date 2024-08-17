@@ -6,7 +6,6 @@ import Navbar from '../components/navbar'
 const Settings = () => {
   return (
     <SafeAreaView>
-      <Navbar/>
       <View>
       <Text>Settings</Text>
       </View>

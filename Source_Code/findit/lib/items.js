@@ -1,7 +1,5 @@
 import backendBaseURL from "../utils/backendBaseURL";
 import handleApiError from "../utils/handleApiError";
-
-
 /**
  * Creates a new item via API.
  * @param {Object} newItem - The item data to be created.
@@ -31,6 +29,25 @@ const createNewItem = async (newItem, setMessage, setIsError) => {
     }
 };
 
+const getItemById = async(itemId,setMessage,setIsError) => {
+    try {
+        const response = await backendBaseURL.get(`/items/${itemId}`);
+        const data = response.data;
+        if (!data) {    
+            setMessage('No data returned from API')
+            return null;
+        }
+
+        return data;
+        
+    } catch (error) {
+        setMessage(handleApiError(error,setIsError))
+        console.log(handleApiError(error, setIsError))
+        return null;
+    }
+}
+
 export {
-    createNewItem
+    createNewItem,
+    getItemById
 };

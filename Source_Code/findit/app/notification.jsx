@@ -1,7 +1,10 @@
 import { View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FontAwesome } from '@expo/vector-icons';
+import fetchUserNotificationData from '../lib/notification';
+import { useState } from 'react';
+import { useGlobalContext } from '../context/globalContext';
 
 const Notification = () => {
   const notifications = [
@@ -11,25 +14,42 @@ const Notification = () => {
   { id: 4, title: 'Reminder', text: 'Remember to check the location of your keys. Last seen: Click here.', forMoreText: 'Click here' },
   { id: 5, title: 'Notification 5', text: 'This is the fifth notification text.', forMoreText: 'Click here' },
   ];
+  const [notification, setNotification] = useState(null);
+  const { userData,setMessage,setIsError } = useGlobalContext();
+  useEffect(() => {
+    const loadData = async() => {
+      try {
+        const notification = await fetchUserNotificationData(userData.id,setMessage,setIsError)
+        if (notification) {
+          console.log(notification)
+          setNotification(notification)
+          } 
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    loadData();
+  }, [])
+  
   return (
     <SafeAreaView className='flex-1 bg-white px-4'>
       <ScrollView className="flex-1 bg-white">
-      <View className='shadow shadow-bgsecondary'>
-        {notifications.map(notification => (
-          <View key={notification.id} className="mb-6 p-4 border-b border-gray-300 rounded-lg">
+      {notification && (<View className='shadow shadow-bgsecondary'>
+        {notification.map(notification => (
+          <View key={notification._id} className="mb-6 p-4 border-b border-gray-300 rounded-lg">
             <View className="flex-row justify-between items-center">
               <Text className="text-lg font-bold">{notification.title}</Text>
               <TouchableOpacity>
                 <FontAwesome name="trash" size={24} color="#7454f4" />
               </TouchableOpacity>
             </View>
-            <Text className="mt-2 text-gray-700">{notification.text}</Text>
+            <Text className="mt-2 text-gray-700">{notification.content}</Text>
             <TouchableOpacity>
-              <Text className="mt-2 text-primary">{notification.forMoreText}</Text>
+              <Text className="mt-2 text-primary">{notification.linkText}</Text>
             </TouchableOpacity>
           </View>
         ))}
-      </View>
+      </View>)}
     </ScrollView>
     </SafeAreaView>
   )

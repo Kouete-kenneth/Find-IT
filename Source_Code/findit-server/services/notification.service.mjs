@@ -24,22 +24,17 @@ const createNotification = async (notificationBody) => {
 const getAllNotifications = async (userId) => {
   try {
     const notifications = await Notification.find({
-      $or: [
-        { userId }, // User is the direct recipient
-        { recipientType: 'everyone' }, // Notification is sent to everyone
-        { recipientType: 'chosen', recipients: userId }, // User is in the chosen recipients list
-      ],
+      // $or: [
+      //   { userId }, // User is the direct recipient
+        recipientType: 'everyone' // Notification is sent to everyone
+         // User is in the chosen recipients list
+      // ],
     });
     
-    if (notifications) {
-      return notifications;
-    } else {
-
-      throw new Error(`Could not find notifications for userId: ${userId}`);
-    }
+    return notifications; // Always return the notifications array, even if it's empty
   } catch (error) {
-    console.error('Error saving notification:', error.message);
-    throw new Error('Error fetching notifications');
+    console.error('Error fetching notifications:', error.message);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Error fetching notifications');
   }
 };
 

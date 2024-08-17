@@ -9,8 +9,12 @@ const logout = async (setMessage, setIsError) => {
     // Get refreshToken from AsyncStorage
     const refreshToken = await AsyncStorage.getItem('refreshToken');
 
+    if (!refreshToken) {
+      setMessage("refresh Token not found")
+      console.log("refresh Token not found")
+      return null
+    }
     console.log('REFRESHTOKEN:', refreshToken);
-    
     // Make a request to the backend to logout using the refreshToken
     await backendBaseURL.post('/auth/logout', { refreshToken });
     
@@ -20,6 +24,7 @@ const logout = async (setMessage, setIsError) => {
     
     // Set success message
     setMessage('Logout successfully');
+    console.log('Logout successfully');
     setIsError(false);
   
   } catch (error) {

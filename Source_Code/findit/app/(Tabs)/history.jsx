@@ -1,8 +1,10 @@
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Navbar from '../../components/navbar'
 import { FontAwesome } from '@expo/vector-icons'
+import fetchUserHistoryData from '../../lib/history'
+import { useGlobalContext } from '../../context/globalContext'
 
 const History = () => {
     const historyItems = [
@@ -12,11 +14,27 @@ const History = () => {
         { id: 4, title: 'Bag', description: 'Black leather bag', date: '2024-07-07', image: require('../../assets/images/temp/bag.jpg'), recovered: false, source: 'uploaded' },
         { id: 5, title: 'watch', description: 'HiWatch, a smart watch, orange in color', date: '2022-07-12', image: require('../../assets/images/temp/watch2.jpg'), recovered: true, source: 'found' },
         { id: 6, title: 'passport', description: 'Bluewish passpart', date: '2021-07-07', image: require('../../assets/images/temp/passport.jpg'), recovered: false, source: 'uploaded' },
-      ];
+  ];
+  const [historyData, setHistoryData] = useState(null);
+  const {userData,setMessage,setIsError}=useGlobalContext()
+  useEffect(() => {
+    const loadData = async() => {
+      try {
+        const history = await fetchUserHistoryData(userData.id,setMessage,setIsError)
+        if (history) {
+          setHistoryData(history);
+          } 
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    loadData();
+  }, [])
+  
       const renderItem = ({ item }) => (
         <View className="mb-6 p-4 border border-gray-300 rounded-lg flex-row items-center">
           <Image
-            source={ item.image }
+            source={{uri:item.image}}
             className="w-16 h-16 rounded-lg mr-4"
             resizeMode='contain'
           />
@@ -44,7 +62,7 @@ const History = () => {
         <View className="flex-1 bg-white p-4">
             <Text className="text-2xl font-extrabold text-center mb-4">History</Text>
             <FlatList
-                data={historyItems}
+                data={historyData}
                 renderItem={renderItem}
                 keyExtractor={item => item.id.toString()}
             />
