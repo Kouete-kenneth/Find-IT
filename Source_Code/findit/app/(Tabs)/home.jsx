@@ -146,7 +146,7 @@ const Home = () => {
           type: "found",
           contactPersonContact: currentLocationContactPersonTel,
           missingLocation: foundLocation.toLowerCase(),
-          itemName:foundName,
+          name:foundName,
           currentLocation: {
             townOrVillage: currentLocationTown.toLowerCase(),
             quarter: currentLocationQuarter.toLowerCase(),

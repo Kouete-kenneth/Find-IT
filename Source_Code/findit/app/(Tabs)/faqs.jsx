@@ -46,7 +46,6 @@ const FAQs = () => {
         const faqs = await fetchFAQData(setMessage,setIsError)
         if (faqs) {
           setFaqs(faqs);
-          console.log(faqs)
           } 
       } catch (error) {
         console.log(error)

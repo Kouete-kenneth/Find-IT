@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 
 const connectToDatabase = async () => {
-  const connectionString = process.env.MONGODBURL || "";
+  const connectionString = process.env.MONGODB_URL || "";
   try {
     console.log("Connecting to MongoDB Atlas...");
     await mongoose.connect(connectionString, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       dbName: "AppleProduct-operationalDB",
       socketTimeoutMS: 30000
     });

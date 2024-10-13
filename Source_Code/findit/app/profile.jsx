@@ -12,7 +12,7 @@ const Profile = () => {
       <ScrollView className='flex-1  p-4'>
         <View className="flex-col justify-between gap-3 relative p-4">
           <View className="items-center p-4">
-            <View>
+            <View>{/**profile */}
               <Image
                 source={require('../assets/images/profile.jpg')}
                 className=" w-44 h-44 rounded-full"
@@ -24,7 +24,7 @@ const Profile = () => {
           </View>
 
           <View className="mt-4 flex-col gap-y-4">
-            <View className="flex-row gap-x-4 items-start mb-4">
+            <View className="flex-row gap-x-4 items-start mb-4">{/**Name */}
                 <View className='pt-2'>
                   <FontAwesome name="user" size={24} color="gray" />
                 </View>
@@ -32,7 +32,7 @@ const Profile = () => {
                   <View className='flex-1'>
                     <Text className="text-gray-600">Name</Text>
                     <TextInput
-                      value={userData.name}
+                      value={userData?userData.name: "user's name"}
                       className="py-1"
                       editable={false}
                     />
@@ -44,7 +44,7 @@ const Profile = () => {
                 
               </View>
 
-              <View className="flex-row gap-x-4 items-start mb-4">
+              <View className="flex-row gap-x-4 items-start mb-4">{/**Email */}
                 <View className='pt-2'>
                   <FontAwesome name="user" size={24} color="gray" />
                 </View>
@@ -52,7 +52,7 @@ const Profile = () => {
                   <View className='flex-1'>
                     <Text className="text-gray-600">Email</Text>
                     <TextInput
-                      value={userData.email}
+                      value={userData?userData.email: "user's email"}
                       className="py-1"
                       editable={false}
                     />
@@ -67,7 +67,7 @@ const Profile = () => {
                 
               </View>
 
-              <View className="flex-row gap-x-4 items-start mb-4">
+              <View className="flex-row gap-x-4 items-start mb-4">{/**Phone */}
                 <View className='pt-2'>
                   <FontAwesome name="phone" size={24} color="gray" />
                 </View>
@@ -75,28 +75,31 @@ const Profile = () => {
                   <View className='flex-1'>
                     <Text className="text-gray-600">Phone</Text>
                     <TextInput
-                      value={userData.phone || 'not bind yet' }
+                      value={userData?(userData.phone || 'not bind yet'): "user's phone number" }
                       className="py-1"
                       editable={false}
                     />
                   </View>
                   <View>
+                  
                   {
-                    !userData.phone && (
-                      <Text className='text-primary'>Bind</Text>
-                    )
+                      userData && !userData.phone && (
+                        <Text className='text-primary'>Bind</Text>
+                      )
                   }
                   {
-                    userData.phone && (
-                      <FontAwesome name='pencil' size={16} color="#7454f4"/>
+                    userData && userData.phone && (
+                      <FontAwesome name='pencil' size={16} color="#7454f4" />
                     )
-                    }
+                  }
+
+                  
                   </View>
                 </View>
                 
               </View>
 
-              <View className="flex-row gap-x-4 items-start mb-4">
+              <View className="flex-row gap-x-4 items-start mb-4">{/**Address */}
                 <View className='pt-2'>
                   <FontAwesome name="map-marker" size={24} color="gray" />
                 </View>

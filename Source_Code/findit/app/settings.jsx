@@ -12,8 +12,6 @@ const Settings = () => {
   const [showOnBoarding, setShowOnBoarding] = useState(true);
   const [autoLogout, setAutoLogout] = useState(true);
   const [confirmBeforeUploading, setConfirmBeforeUploading] = useState(true);
-  const [confirmBeforeDeletingHistory, setConfirmBeforeDeletingHistory] = useState(true);
-  const [confirmBeforeDeletingNotification, setConfirmBeforeDeletingNotification] = useState(true);
   const [theme, setTheme] = useState('System default');
 
   const [isNotificationExpanded, setIsNotificationExpanded] = useState(false);
@@ -98,17 +96,6 @@ const Settings = () => {
               thumbColor={updateReminder ? "#f4f3f4" : "#f4f3f4"}
             />
           </View>
-
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-lg font-bold text-gray-800">Faqs</Text>
-            <Switch
-              value={showOnBoarding}
-              onValueChange={() => toggleSwitch(setShowOnBoarding)}
-              trackColor={{ false: "#767577", true: "#7454f4" }}
-              thumbColor={showOnBoarding ? "#f4f3f4" : "#f4f3f4"}
-            />
-          </View>
-
           <View className="flex-row justify-between items-center mb-4">
             <Text className="text-lg font-bold text-gray-800">Show onBoarding</Text>
             <Switch

@@ -7,7 +7,7 @@ import { useGlobalContext } from '../context/globalContext';
 
 const Menu = () => {
   const [menuVisible, setMenuVisible] = useState(false);
-  const { setIsError, setMessage,setIsLoggedIn } = useGlobalContext();
+  const { setIsError, setMessage,setIsLoggedIn,setUserData } = useGlobalContext();
   const navigation=useNavigation()
   const toggleMenu = () => {
     setMenuVisible(!menuVisible);
@@ -22,6 +22,7 @@ const Menu = () => {
     try {
       await logout(setMessage, setIsError);
       setIsLoggedIn(false);
+      setUserData(null)
       navigation.navigate('index')
     } catch (error) {
       console.log(error);
@@ -71,12 +72,7 @@ const Menu = () => {
                     <Text className='text-center font-Roboto text-xl'> Contact Us</Text>
                   </Link>
                 </TouchableOpacity>
-                <TouchableOpacity className="mb-5 flex-row justify-center border-b-2 border-b-slate-200 pb-2">
-                  <Link href="/notification">
-                    <FontAwesome name="question-circle-o" size={20} className='text-center font-Roboto text-xl'/>
-                    <Text className='text-center font-Roboto text-xl'> Help</Text>
-                  </Link>
-                </TouchableOpacity>
+                
                 <TouchableOpacity className="mb-5 flex-row justify-center border-b-2 border-b-slate-200 pb-2">
                   <Link href="/settings">
                     <FontAwesome name="cog" size={20} className='text-center font-Roboto text-xl'/>

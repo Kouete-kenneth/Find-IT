@@ -15,6 +15,7 @@ const createNewItem = async (newItem, setMessage, setIsError) => {
             if (!data) {
                 throw new Error('No data returned from API');
             }
+            console.log('Item saved successfully!')
             setMessage('Item saved successfully!');
             setIsError(false);
             return data;
